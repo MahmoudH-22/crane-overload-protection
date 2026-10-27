@@ -1,0 +1,14 @@
+# Flutter
+app/.dart_tool/
+app/build/
+app/.flutter-plugins*
+app/.packages
+# PlatformIO / Arduino
+.pio/
+build/
+# KiCad backups
+hardware/*-backups/
+hardware/*.lck
+# OS
+.DS_Store
+Thumbs.db

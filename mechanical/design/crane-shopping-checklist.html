@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crane Overload – shopping checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E9EEF1;--paper:#F8FAFB;--ink:#16232F;--muted:#5B6B78;--line:#C9D3DA;--safety:#F2B71E;--done:#2E7D4F;--done-soft:#E3F2E9;
+  --head:"Barlow Condensed","Arial Narrow",Arial,sans-serif;--body:"IBM Plex Sans","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color-scheme:light;box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F161C;--paper:#18222B;--ink:#E6ECF0;--muted:#97A6B2;--line:#2C3A45;--done:#5CC08A;--done-soft:#18342A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0F161C;--paper:#18222B;--ink:#E6ECF0;--muted:#97A6B2;--line:#2C3A45;--done:#5CC08A;--done-soft:#18342A;color-scheme:dark}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 110px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--body)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:#16232F}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--safety);outline-offset:2px}
+.top{background:#16232F;color:#EEF2F4;padding:18px 20px 2px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:#16232F;color:#EEF2F4;padding:8px 20px 0;border-bottom:4px solid var(--safety)}
+.wrap{max-width:860px;margin:0 auto}
+h1{font:800 clamp(1.9rem,6vw,2.8rem)/1 var(--head);margin:0;letter-spacing:.01em}
+.team{color:#AFC0CC;font-size:.82rem;margin:6px 0 12px}
+.meter{display:flex;align-items:flex-end;gap:14px;margin-bottom:12px}
+.count{font:700 2.2rem/1 var(--head);white-space:nowrap}
+.count small{font:500 .9rem var(--body);color:#AFC0CC;margin-left:4px}
+.bar{flex:1;height:22px;border-radius:4px;background:#26353F;overflow:hidden;position:relative;border:1px solid #3A4A55}
+.fill{position:absolute;inset:0 auto 0 0;width:0;background:repeating-linear-gradient(-45deg,#F2B71E 0 12px,#16232F 12px 24px);transition:width .4s ease}
+.fill.full{background:#2E7D4F}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+.tools{display:flex;gap:6px;flex-wrap:wrap;padding-bottom:12px}
+.tabs2{display:flex;gap:0;margin:0 0 10px;border-bottom:1px solid rgba(255,255,255,.18)}
+.tabs2 button{border:0;background:none;color:#AFC0CC;padding:8px 14px 9px;font:700 1.15rem var(--head);letter-spacing:.01em;border-bottom:3px solid transparent;margin-bottom:-1px}
+.tabs2 button[aria-selected="true"]{color:#fff;border-bottom-color:var(--safety)}
+.m1n{display:block;font-size:.8rem;color:var(--ink);background:color-mix(in srgb,var(--safety) 18%,transparent);border-radius:4px;padding:1px 6px;margin-top:4px}
+#m1box{margin-top:14px}
+.tools button{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);color:#EEF2F4;border-radius:7px;padding:6px 12px;font-size:.85rem;font-weight:600}
+.tools button[aria-pressed="true"]{background:var(--safety);border-color:var(--safety);color:#16232F}
+.tools .sp{flex:1}
+main{padding:8px 20px 40px}
+.drawn{font-size:.8rem;color:var(--muted)}
+section{margin-top:22px}
+h2{font:700 1.45rem/1.1 var(--head);margin:0 0 8px;display:flex;align-items:baseline;gap:10px}
+h2 .g{font:500 .85rem var(--body);color:var(--muted)}
+ul{list-style:none;margin:0;padding:0;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+li+li{border-top:1px solid var(--line)}
+label{display:grid;grid-template-columns:30px 96px 1fr auto;gap:4px 12px;align-items:start;padding:11px 14px;cursor:pointer}
+.th{width:96px;height:72px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:2px;display:block;position:relative;overflow:hidden}
+.th svg,.th img{width:100%;height:100%;display:block;object-fit:cover}
+.th .tag{position:absolute;right:3px;bottom:3px;background:rgba(22,35,47,.8);color:#fff;font-size:.62rem;padding:0 4px;border-radius:3px}
+.ph{margin-top:6px;border:1px solid var(--line);background:var(--paper);border-radius:6px;padding:3px 9px;font-size:.78rem;color:var(--muted)}
+.ph:hover{color:var(--ink);border-color:var(--muted)}
+dialog{border:0;border-radius:14px;padding:0;max-width:min(560px,94vw);width:100%;background:var(--paper);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(10,16,22,.6)}
+.dv{background:#fff;aspect-ratio:4/3;display:grid;place-items:center;border-bottom:1px solid var(--line)}
+.dv svg,.dv img{width:100%;height:100%;object-fit:contain}
+.db{padding:14px 18px 16px}
+.db h3{font:700 1.5rem/1.1 var(--head);margin:0 0 4px}
+.db p{margin:2px 0;font-size:.9rem}
+.db .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.db .row button{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px 14px;font-weight:600}
+.db .row .go{background:var(--safety);border-color:var(--safety);color:#16232F}
+.db .row .sp{flex:1}
+.hint{font-size:.78rem;color:var(--muted);margin-top:8px}
+label:hover{background:color-mix(in srgb,var(--safety) 8%,transparent)}
+input[type=checkbox]{appearance:none;width:24px;height:24px;margin:1px 0 0;border:2px solid var(--muted);border-radius:6px;display:grid;place-items:center;cursor:pointer;background:var(--paper)}
+input[type=checkbox]:checked{background:var(--done);border-color:var(--done)}
+input[type=checkbox]:checked::after{content:"";width:6px;height:12px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.it{font-weight:600}
+.nm{display:block;font-size:.9rem}
+.spec{display:block;font-size:.82rem;color:var(--muted)}
+.q{font:700 1.15rem var(--head);white-space:nowrap;text-align:right}
+li.on label{background:var(--done-soft)}
+li.on .it,li.on .nm{text-decoration:line-through;text-decoration-thickness:1.5px;color:var(--muted)}
+.empty{padding:14px;color:var(--muted);font-size:.9rem}
+.check{margin-top:26px;background:var(--paper);border:1px solid var(--line);border-left:6px solid var(--safety);border-radius:10px;padding:14px 18px}
+.check h2{font-size:1.3rem}
+.check p{margin:6px 0;font-size:.92rem}
+.note{color:var(--muted);font-size:.8rem;margin-top:20px}
+@media (max-width:560px){label{grid-template-columns:26px 72px 1fr auto}.th{width:72px;height:54px}.top{padding:14px 14px 0}header{padding:6px 14px 0}.tools button{padding:6px 10px}.meter{margin-bottom:8px}.tools{padding-bottom:8px}main{padding:6px 12px 32px}label{padding:10px 12px;gap:2px 10px}.count{font-size:1.8rem}}
+@media print{header{position:static}.tools{display:none}body{background:#fff}ul{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap">
+    <h1>Crane Overload shopping checklist</h1>
+    <p class="team">Mahmoud Hisham 2400844, Ziad Hany 2301401, Abdulrahman Mohamed 2400544, Ahmed Hany 2400311</p>
+</div></div>
+<header>
+  <div class="wrap">
+    <div class="tabs2" role="tablist" aria-label="List"><button type="button" role="tab" data-tab="all" aria-selected="true">Full list</button><button type="button" role="tab" data-tab="m1" aria-selected="false">Milestone 1</button></div>
+    <div class="meter"><div class="count" id="count">0<small>of 0 bought</small></div><div class="bar" aria-hidden="true"><div class="fill" id="fill"></div></div></div>
+    <div class="tools" role="group" aria-label="Show">
+      <button type="button" data-f="all" aria-pressed="true">All</button>
+      <button type="button" data-f="todo" aria-pressed="false">Still to buy</button>
+      <button type="button" data-f="done" aria-pressed="false">Bought</button>
+      <span class="sp"></span>
+      <button type="button" id="print">Print</button>
+      <button type="button" id="reset">Clear ticks</button>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+  <p class="note" style="margin-top:6px">Everything except the laser-cut MDF parts. Tap a row when you’ve bought it; your ticks stay on this device. Numbers like “1 (+1)” include a recommended spare.</p>
+  <p class="note drawn">The pictures are drawings of the generic part, to show what to look for. Tap a picture to see it bigger, or use <b>Add photo</b> to keep a real photo of the part you found (from your phone camera or a screenshot of the shop page).</p>
+  <div class="check" id="m1box" hidden>
+    <h2>Milestone 1: what has to work</h2>
+    <p>Both prototypes must work <b>on the physical crane model</b>, not on a bare breadboard:</p>
+    <p><b>ON/OFF sensor:</b> the limit switch under the arm tip is pressed by the rising hook, and the app shows <b>AT TOP</b> / <b>BELOW TOP</b> every time.</p>
+    <p><b>Analog sensor (with conditioning):</b> the 5 kg load cell hangs between the rope and the basket on the Z-mount. Its 0–5 mV signal goes through your INA125 amplifier (gain resistor, 0.42 V reference, RC filter) into the Uno, and the app shows the <b>weight in kg</b>. Check it against the kitchen scale with the test bottles.</p>
+    <p><b>Also needed:</b> the laser-cut MDF frame (base, mast, arm, brace, gussets, motor plate, switch bracket). The electronics can stay on the breadboard for M1.</p>
+    <p><b>Not needed yet:</b> current sensor (ACS712), LCD, control panel parts, PCB, buzzer, paint.</p>
+  </div>
+  <div id="list"></div>
+  <input type="file" id="file" accept="image/*" hidden>
+  <dialog id="dlg"><div class="dv" id="dv"></div><div class="db"><h3 id="dt"></h3><p id="dn"></p><p class="spec" id="ds"></p>
+    <div class="row"><button type="button" class="go" id="dAdd">Add photo</button><button type="button" id="dDel">Remove photo</button><span class="sp"></span><button type="button" id="dClose">Close</button></div>
+    <p class="hint" id="dh"></p></div></dialog>
+  <div class="check">
+    <h2>Check before you pay</h2>
+    <p><b>Motor:</b> it must come <b>with an encoder</b>, run on <b>12 V</b>, at <b>≈ 20 RPM</b>, with <b>≥ 8 kg·cm</b> torque and a <b>Ø6 mm D-shaft</b>.</p>
+    <p><b>Load cell:</b> read the mV/V rating on its label to choose the gain resistor (1 mV/V → 91 Ω, 2 mV/V → 180 Ω).</p>
+    <p><b>STOP button:</b> it needs an <b>NC</b> contact (the 3-pin 1NO1NC type).</p>
+    <p><b>Buck converter:</b> set it to <b>5.00 V</b> with a multimeter before connecting anything.</p>
+    <p><b>No longer needed:</b> IR module, ultrasonic sensor, separate encoder, flexible coupler, stub shaft, encoder bracket.</p>
+  </div>
+</main>
+<script>
+// Component drawings (generic, unbranded), viewBox 0 0 120 90.
+const S = (inner) => `<svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg" role="img">${inner}</svg>`;
+const pins = (x, y, n, gap = 6, h = 6, c = '#b9bcc0') => Array.from({ length: n }, (_, i) => `<rect x="${x + i * gap}" y="${y}" width="2.4" height="${h}" fill="${c}"/>`).join('');
+const header = (x, y, n, gap = 5) => `<rect x="${x - 1}" y="${y}" width="${n * gap}" height="5" rx="0.6" fill="#1d1f22"/>` + Array.from({ length: n }, (_, i) => `<rect x="${x + i * gap + 1}" y="${y + 1.5}" width="2" height="2" fill="#d9b44a"/>`).join('');
+const chip = (x, y, w, h, n, label = '') => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="1.5" fill="#26282b"/>` + pins(x + 3, y - 4, n, (w - 6) / (n - 1) || 1, 4) + pins(x + 3, y + h, n, (w - 6) / (n - 1) || 1, 4) + `<circle cx="${x + 5}" cy="${y + h / 2}" r="2" fill="#3c3f44"/><text x="${x + w / 2}" y="${y + h / 2 + 3}" font-size="7" fill="#c9cdd1" text-anchor="middle" font-family="Arial">${label}</text>`;
+const cap = (x, y, r, c) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}"/><circle cx="${x}" cy="${y}" r="${r * 0.55}" fill="none" stroke="rgba(255,255,255,.35)"/>`;
+const term = (x, y, n, c = '#2b78c2') => `<rect x="${x}" y="${y}" width="${n * 9}" height="10" rx="1" fill="${c}"/>` + Array.from({ length: n }, (_, i) => `<circle cx="${x + 4.5 + i * 9}" cy="${y + 5}" r="2.6" fill="#c9cdd1"/><line x1="${x + 2.5 + i * 9}" y1="${y + 5}" x2="${x + 6.5 + i * 9}" y2="${y + 5}" stroke="#6b7076" stroke-width="1"/>`).join('');
+const btn = (cx, cy, c) => `<circle cx="${cx}" cy="${cy}" r="24" fill="#c7cbcf"/><circle cx="${cx}" cy="${cy}" r="24" fill="none" stroke="#8e9398" stroke-width="2"/><circle cx="${cx}" cy="${cy}" r="17" fill="${c}"/><ellipse cx="${cx - 5}" cy="${cy - 6}" rx="7" ry="4" fill="rgba(255,255,255,.35)"/>`;
+const bolt = (len) => `<rect x="${20}" y="38" width="12" height="16" rx="1.5" fill="#8f969c"/><rect x="32" y="41" width="${len}" height="10" fill="#b4bbc1"/>` + Array.from({ length: Math.floor(len / 4) }, (_, i) => `<line x1="${34 + i * 4}" y1="41" x2="${32 + i * 4}" y2="51" stroke="#868d93" stroke-width="1"/>`).join('');
+const PICS = {
+  limit: S(`<rect x="22" y="38" width="66" height="30" rx="3" fill="#1f2226"/><circle cx="34" cy="53" r="3" fill="#41464c"/><circle cx="76" cy="53" r="3" fill="#41464c"/>${pins(36, 68, 3, 18, 10, '#c7a54b')}<path d="M30 38 L90 22" stroke="#c9cdd1" stroke-width="3"/><circle cx="92" cy="21" r="7" fill="#e7e9eb" stroke="#9aa0a6" stroke-width="2"/>`),
+  acs: S(`<rect x="14" y="16" width="92" height="58" rx="3" fill="#c0322b"/>${term(18, 22, 2)}<rect x="52" y="34" width="20" height="18" rx="1" fill="#1d1f22"/>${pins(30, 74, 3, 9, 8)}<text x="80" y="66" font-size="7" fill="#f4d9d6" font-family="Arial">5A</text>${cap(88, 30, 3, '#d9b44a')}`),
+  loadcell: S(`<rect x="8" y="34" width="96" height="22" rx="1.5" fill="#cfd5da" stroke="#9aa3ab"/><circle cx="16" cy="45" r="3" fill="#7c858d"/><circle cx="26" cy="45" r="3" fill="#7c858d"/><circle cx="86" cy="45" r="3" fill="#7c858d"/><circle cx="96" cy="45" r="3" fill="#7c858d"/><rect x="46" y="40" width="20" height="10" rx="5" fill="#f2f4f5" stroke="#9aa3ab"/><rect x="50" y="36" width="12" height="4" fill="#e9c46a"/><path d="M56 56 C58 70 70 74 100 76" stroke="#d62828" stroke-width="2" fill="none"/><path d="M56 56 C59 72 70 78 100 80" stroke="#1d1f22" stroke-width="2" fill="none"/><path d="M56 56 C60 74 70 82 100 84" stroke="#2a9d8f" stroke-width="2" fill="none"/><path d="M56 56 C61 76 70 86 100 88" stroke="#f1f1f1" stroke-width="2" fill="none"/><text x="58" y="31" font-size="8" fill="#5a6977" text-anchor="middle" font-family="Arial">5 kg</text>`),
+  ina: S(chip(26, 34, 68, 22, 8, 'INA125P')),
+  mcp: S(chip(38, 34, 44, 22, 4, 'MCP6002')),
+  socket: S(`<rect x="24" y="30" width="72" height="30" rx="2" fill="#2c2f33"/><rect x="34" y="40" width="52" height="10" fill="#4a4f55"/>` + Array.from({ length: 8 }, (_, i) => `<rect x="${28 + i * 8.6}" y="32" width="4" height="4" fill="#d9b44a"/><rect x="${28 + i * 8.6}" y="54" width="4" height="4" fill="#d9b44a"/>`).join('')),
+  motor: S(`<rect x="10" y="30" width="44" height="40" rx="3" fill="#9aa1a7"/><rect x="54" y="38" width="44" height="24" rx="3" fill="#2a2d31"/><rect x="98" y="42" width="10" height="16" rx="2" fill="#1d1f22"/><circle cx="32" cy="50" r="10" fill="#7d858c"/><rect x="28" y="12" width="8" height="18" fill="#c9cdd1"/><rect x="28" y="12" width="4" height="18" fill="#e3e6e8"/><path d="M108 50 C116 50 116 70 108 80" stroke="#d62828" stroke-width="1.8" fill="none"/><path d="M108 52 C118 54 118 74 104 84" stroke="#1d1f22" stroke-width="1.8" fill="none"/><path d="M108 54 C120 58 116 78 100 88" stroke="#2a9d8f" stroke-width="1.8" fill="none"/><text x="76" y="53" font-size="6.5" fill="#c9cdd1" text-anchor="middle" font-family="Arial">ENC</text>`),
+  uno: S(`<rect x="8" y="12" width="104" height="70" rx="4" fill="#1f6fa8"/><rect x="2" y="22" width="20" height="18" fill="#c9cdd1"/><rect x="4" y="52" width="16" height="16" rx="2" fill="#1d1f22"/>${header(36, 15, 10)}${header(60, 76, 8)}${header(32, 76, 5)}<rect x="56" y="44" width="42" height="12" rx="1" fill="#26282b"/>${pins(58, 40, 12, 3.4, 4)}${pins(58, 56, 12, 3.4, 4)}<rect x="30" y="30" width="10" height="6" fill="#c9cdd1"/><circle cx="100" cy="22" r="3" fill="#f1f1f1"/><circle cx="16" cy="76" r="2" fill="#0f4c75"/>`),
+  nodemcu: S(`<rect x="16" y="20" width="88" height="50" rx="3" fill="#1d1f22"/><rect x="66" y="26" width="34" height="30" rx="1.5" fill="#c9cdd1"/><rect x="70" y="30" width="26" height="22" fill="#e3e6e8"/><path d="M100 60 h4 v-6 h-4 v-4 h4" stroke="#d9b44a" stroke-width="2" fill="none"/><rect x="8" y="38" width="10" height="12" rx="1" fill="#b4bbc1"/>${header(22, 20, 15)}${header(22, 65, 15)}<rect x="30" y="34" width="14" height="14" fill="#33373c"/><circle cx="54" cy="58" r="3" fill="#41464c"/><circle cx="54" cy="32" r="3" fill="#41464c"/>`),
+  l298n: S(`<rect x="14" y="20" width="92" height="62" rx="3" fill="#c0322b"/><rect x="38" y="6" width="44" height="34" rx="1" fill="#16181b"/>` + Array.from({ length: 7 }, (_, i) => `<rect x="${41 + i * 6}" y="6" width="3" height="34" fill="#2c2f33"/>`).join('') + `${term(16, 48, 2)}${term(86, 48, 2)}${term(40, 70, 3)}${header(70, 74, 6)}${cap(30, 34, 5, '#2b3a55')}${cap(92, 34, 5, '#2b3a55')}`),
+  pcf: S(`<rect x="20" y="22" width="80" height="46" rx="3" fill="#1f6fa8"/>${chip(42, 36, 36, 14, 8, 'PCF8574')}${header(24, 26, 4)}${header(78, 26, 4)}<rect x="24" y="56" width="12" height="8" fill="#1d1f22"/>`),
+  lcd: S(`<rect x="4" y="16" width="112" height="58" rx="3" fill="#1f6fa8"/><rect x="12" y="24" width="96" height="38" rx="2" fill="#1d1f22"/><rect x="16" y="28" width="88" height="30" fill="#7ec850"/><text x="20" y="41" font-size="9" fill="#1d3a12" font-family="Courier New">LOAD 1.25kg OK</text><text x="20" y="53" font-size="9" fill="#1d3a12" font-family="Courier New">H:120mm  IDLE</text>${header(20, 66, 16)}`),
+  adapter: S(`<rect x="18" y="20" width="46" height="52" rx="6" fill="#1d1f22"/><rect x="26" y="30" width="30" height="12" rx="2" fill="#33373c"/><text x="41" y="39" font-size="7" fill="#c9cdd1" text-anchor="middle" font-family="Arial">12V 2A</text><path d="M64 60 C84 60 80 30 96 30" stroke="#1d1f22" stroke-width="3.5" fill="none"/><rect x="96" y="25" width="14" height="10" rx="1" fill="#2c2f33"/><rect x="108" y="27" width="6" height="6" fill="#c9cdd1"/>`),
+  dcjack: S(`<rect x="40" y="18" width="40" height="40" rx="4" fill="#1d1f22"/><circle cx="60" cy="38" r="12" fill="#33373c"/><circle cx="60" cy="38" r="4" fill="#c9cdd1"/><rect x="46" y="58" width="28" height="12" fill="#2c2f33"/>${pins(50, 70, 3, 9, 12, '#c7a54b')}`),
+  lm2596: S(`<rect x="10" y="20" width="100" height="52" rx="3" fill="#1f6fa8"/><rect x="40" y="28" width="26" height="26" rx="3" fill="#2c2f33"/><circle cx="53" cy="41" r="9" fill="#3c4148"/>${cap(24, 40, 9, '#1d1f22')}${cap(94, 40, 9, '#1d1f22')}<rect x="72" y="52" width="12" height="12" fill="#2b78c2"/><circle cx="78" cy="58" r="3" fill="#e3c25a"/><rect x="40" y="58" width="22" height="10" rx="1" fill="#26282b"/>`),
+  diode: S(`<line x1="8" y1="45" x2="112" y2="45" stroke="#b9bcc0" stroke-width="2.5"/><rect x="38" y="33" width="44" height="24" rx="5" fill="#1d1f22"/><rect x="72" y="33" width="6" height="24" fill="#c9cdd1"/>`),
+  fuse: S(`<rect x="22" y="30" width="76" height="30" rx="4" fill="#1d1f22"/><rect x="36" y="35" width="48" height="20" rx="8" fill="rgba(220,235,245,.85)" stroke="#9aa3ab"/><rect x="34" y="35" width="8" height="20" fill="#c9cdd1"/><rect x="78" y="35" width="8" height="20" fill="#c9cdd1"/><line x1="42" y1="45" x2="78" y2="45" stroke="#7c858d" stroke-width="1.2"/><text x="60" y="72" font-size="8" fill="#5a6977" text-anchor="middle" font-family="Arial">2 A slow</text>`),
+  estop: S(`<rect x="22" y="46" width="76" height="34" rx="4" fill="#f2b71e"/><rect x="40" y="40" width="40" height="12" fill="#2c2f33"/><ellipse cx="60" cy="34" rx="34" ry="16" fill="#b5261e"/><ellipse cx="60" cy="30" rx="34" ry="16" fill="#d63a2f"/><ellipse cx="50" cy="25" rx="12" ry="5" fill="rgba(255,255,255,.3)"/>`),
+  rocker: S(`<rect x="36" y="20" width="48" height="50" rx="3" fill="#1d1f22"/><rect x="42" y="26" width="36" height="38" rx="2" fill="#2c2f33"/><path d="M42 26 L78 32 L78 64 L42 64 Z" fill="#3a3f45"/><text x="52" y="48" font-size="10" fill="#c9cdd1" font-family="Arial">I</text><circle cx="68" cy="52" r="4" fill="none" stroke="#c9cdd1"/>`),
+  btn3: S(btn(28, 45, '#2e9e54').replace(/r="24"/g, 'r="15"').replace(/r="17"/g, 'r="11"') + btn(60, 45, '#2a2d31').replace(/r="24"/g, 'r="15"').replace(/r="17"/g, 'r="11"') + btn(92, 45, '#2b78c2').replace(/r="24"/g, 'r="15"').replace(/r="17"/g, 'r="11"')),
+  btnred: S(btn(60, 42, '#d63a2f') + `<text x="60" y="84" font-size="8" fill="#5a6977" text-anchor="middle" font-family="Arial">1NO + 1NC</text>`),
+  key: S(`<circle cx="50" cy="45" r="24" fill="#c7cbcf" stroke="#8e9398" stroke-width="2"/><circle cx="50" cy="45" r="16" fill="#9aa1a7"/><rect x="47" y="34" width="6" height="22" rx="2" fill="#2c2f33"/><path d="M56 40 h40 v10 h-6 v6 h-6 v-6 h-6 v6 h-6 v-6 h-16 z" fill="#d9b44a"/><circle cx="100" cy="45" r="10" fill="#d9b44a"/>`),
+  leds: S([['#2e9e54', 30], ['#f2b71e', 60], ['#d63a2f', 90]].map(([c, x]) => `<rect x="${x - 3}" y="56" width="1.6" height="26" fill="#b9bcc0"/><rect x="${x + 2}" y="56" width="1.6" height="22" fill="#b9bcc0"/><rect x="${x - 9}" y="50" width="18" height="6" fill="${c}" opacity=".9"/><path d="M${x - 8} 50 v-18 a8 8 0 0 1 16 0 v18 z" fill="${c}" opacity=".85"/><ellipse cx="${x - 3}" cy="${32}" rx="2.5" ry="5" fill="rgba(255,255,255,.45)"/>`).join('')),
+  buzzer: S(`<circle cx="60" cy="40" r="26" fill="#1d1f22"/><circle cx="60" cy="40" r="4" fill="#41464c"/><text x="60" y="26" font-size="7" fill="#c9cdd1" text-anchor="middle" font-family="Arial">+</text><rect x="52" y="66" width="1.8" height="18" fill="#b9bcc0"/><rect x="66" y="66" width="1.8" height="14" fill="#b9bcc0"/>`),
+  transistor: S(`<path d="M42 20 h36 v34 h-36 z" fill="#1d1f22"/><path d="M42 20 a18 10 0 0 1 36 0" fill="#1d1f22"/><rect x="46" y="54" width="28" height="4" fill="#2c2f33"/>${pins(48, 58, 3, 11, 24)}<text x="60" y="40" font-size="7" fill="#c9cdd1" text-anchor="middle" font-family="Arial">2N2222</text>`),
+  panel: S(`<rect x="10" y="14" width="100" height="62" rx="2" fill="rgba(210,230,240,.7)" stroke="#8fb1c4" stroke-width="1.5"/><rect x="16" y="20" width="36" height="13" fill="#fff" stroke="#8fb1c4"/>${[22, 38, 54, 70, 86].map(x => `<circle cx="${x}" cy="56" r="6" fill="#fff" stroke="#8fb1c4"/>`).join('')}<circle cx="96" cy="28" r="10" fill="#fff" stroke="#8fb1c4"/>`),
+  resistors: S([20, 42, 64].map(y => `<line x1="8" y1="${y}" x2="112" y2="${y}" stroke="#b9bcc0" stroke-width="2"/><rect x="38" y="${y - 7}" width="44" height="14" rx="6" fill="#7fb3d5"/><rect x="46" y="${y - 7}" width="3" height="14" fill="#8b4513"/><rect x="53" y="${y - 7}" width="3" height="14" fill="#1d1f22"/><rect x="60" y="${y - 7}" width="3" height="14" fill="#d62828"/><rect x="72" y="${y - 7}" width="3" height="14" fill="#8b5a2b"/>`).join('')),
+  filmcap: S(`<rect x="36" y="18" width="48" height="44" rx="3" fill="#e8b923"/><text x="60" y="44" font-size="9" fill="#5a4400" text-anchor="middle" font-family="Arial">1µF</text>${pins(48, 62, 2, 22, 22)}`),
+  ceramic: S(`<ellipse cx="40" cy="36" rx="16" ry="14" fill="#e08a2c"/><text x="40" y="39" font-size="8" fill="#5a2a00" text-anchor="middle" font-family="Arial">104</text>${pins(34, 50, 2, 10, 30)}<ellipse cx="84" cy="40" rx="12" ry="10" fill="#4a90c2"/><text x="84" y="43" font-size="7" fill="#e3eef6" text-anchor="middle" font-family="Arial">102</text>${pins(79, 50, 2, 8, 26)}`),
+  electrolytic: S(`<rect x="40" y="12" width="40" height="56" rx="6" fill="#1f3e7a"/><rect x="68" y="12" width="8" height="56" fill="#c9d4e6"/><ellipse cx="60" cy="14" rx="20" ry="5" fill="#9aa3ab"/><text x="56" y="46" font-size="7" fill="#e3eef6" text-anchor="middle" font-family="Arial" transform="rotate(-90 56 46)">100µF</text>${pins(50, 68, 2, 18, 18)}`),
+  pcb: S(`<rect x="10" y="12" width="100" height="68" rx="3" fill="#2f7d4f"/>` + Array.from({ length: 6 }, (_, i) => `<path d="M${18 + i * 14} 20 v20 h10 v24" stroke="#d9b44a" stroke-width="1.6" fill="none" opacity=".75"/>`).join('') + `<circle cx="16" cy="18" r="3" fill="#e9ecee"/><circle cx="104" cy="18" r="3" fill="#e9ecee"/><circle cx="16" cy="74" r="3" fill="#e9ecee"/><circle cx="104" cy="74" r="3" fill="#e9ecee"/>`),
+  breadboard: S(`<rect x="6" y="16" width="108" height="62" rx="3" fill="#f1f1ee" stroke="#cfcfc8"/><line x1="10" y1="22" x2="110" y2="22" stroke="#d62828"/><line x1="10" y1="72" x2="110" y2="72" stroke="#2b78c2"/><rect x="8" y="45" width="104" height="4" fill="#dadad3"/>` + Array.from({ length: 18 }, (_, i) => [30, 36, 54, 60].map(y => `<rect x="${12 + i * 5.6}" y="${y}" width="2" height="2" fill="#8a8a82"/>`).join('')).join('') + `<path d="M30 30 C40 6 70 6 80 30" stroke="#f2b71e" stroke-width="2" fill="none"/><path d="M40 60 C55 86 85 86 96 58" stroke="#2e9e54" stroke-width="2" fill="none"/>`),
+  headers: S(`${header(20, 26, 16)}${header(20, 46, 10)}<rect x="19" y="64" width="80" height="8" fill="#1d1f22"/>` + Array.from({ length: 16 }, (_, i) => `<rect x="${21 + i * 5}" y="58" width="1.8" height="6" fill="#d9b44a"/>`).join('')),
+  jst: S([0, 1, 2].map(i => `<rect x="${16 + i * 32}" y="34" width="${18 + i * 4}" height="16" rx="1.5" fill="#f4f1e8" stroke="#c9c3b2"/>` + Array.from({ length: 2 + i }, (_, k) => `<line x1="${20 + i * 32 + k * 5}" y1="50" x2="${20 + i * 32 + k * 5}" y2="76" stroke="${['#d62828', '#1d1f22', '#2b78c2', '#f2b71e'][k]}" stroke-width="1.6"/>`).join('')).join('')),
+  terminal: S(term(24, 40, 3, '#2b78c2').replace(/height="10"/, 'height="14"') + term(66, 40, 2, '#2e9e54')),
+  wire: S([['#d62828', 30], ['#1d1f22', 50], ['#2b78c2', 70], ['#f2b71e', 90]].map(([c, x]) => `<ellipse cx="${x}" cy="45" rx="10" ry="26" fill="none" stroke="${c}" stroke-width="3"/>`).join('')),
+  wire2: S(`<ellipse cx="44" cy="45" rx="18" ry="28" fill="none" stroke="#d62828" stroke-width="5"/><ellipse cx="78" cy="45" rx="18" ry="28" fill="none" stroke="#1d1f22" stroke-width="5"/>`),
+  shielded: S(`<path d="M10 60 C40 20 70 80 100 40" stroke="#8a9096" stroke-width="10" fill="none" stroke-linecap="round"/><g transform="translate(100 40)"><line x1="0" y1="0" x2="14" y2="-8" stroke="#d62828" stroke-width="2"/><line x1="0" y1="0" x2="16" y2="-2" stroke="#1d1f22" stroke-width="2"/><line x1="0" y1="0" x2="15" y2="5" stroke="#2a9d8f" stroke-width="2"/><line x1="0" y1="0" x2="12" y2="10" stroke="#f1f1f1" stroke-width="2"/></g>`),
+  heatshrink: S([['#d62828', 20], ['#1d1f22', 34], ['#2b78c2', 48], ['#f2b71e', 62]].map(([c, y]) => `<rect x="14" y="${y}" width="60" height="9" rx="4" fill="${c}"/>`).join('') + `<path d="M84 20 L106 70" stroke="#1d1f22" stroke-width="4"/><rect x="100" y="64" width="10" height="10" rx="2" fill="#1d1f22"/>`),
+  standoff: S([30, 60, 90].map(x => `<polygon points="${x - 8},28 ${x + 8},28 ${x + 11},40 ${x + 8},52 ${x - 8},52 ${x - 11},40" fill="#efeee9" stroke="#bdbbb2"/><rect x="${x - 2}" y="52" width="4" height="14" fill="#efeee9" stroke="#bdbbb2"/>`).join('')),
+  grommet: S(`<circle cx="60" cy="45" r="28" fill="#1d1f22"/><circle cx="60" cy="45" r="20" fill="#33373c"/><circle cx="60" cy="45" r="12" fill="#f4f6f7"/>`),
+  feet: S([30, 60, 90].map(x => `<ellipse cx="${x}" cy="52" rx="12" ry="5" fill="#1d1f22"/><path d="M${x - 12} 52 v-10 a12 5 0 0 1 24 0 v10" fill="#2c2f33"/>`).join('')),
+  drum: S(`<rect x="30" y="20" width="10" height="50" rx="3" fill="#e9b31a"/><rect x="80" y="20" width="10" height="50" rx="3" fill="#e9b31a"/><rect x="40" y="30" width="40" height="30" fill="#f2c94c"/>` + Array.from({ length: 7 }, (_, i) => `<line x1="${42 + i * 6}" y1="30" x2="${44 + i * 6}" y2="60" stroke="#5aa0d0" stroke-width="1.6"/>`).join('') + `<circle cx="35" cy="45" r="3" fill="#7a5a00"/>`),
+  spacer: S([40, 80].map(x => `<rect x="${x - 14}" y="30" width="28" height="28" rx="2" fill="#c9d0d6" stroke="#8e9aa4"/><circle cx="${x}" cy="44" r="5" fill="#f4f6f7"/>`).join('')),
+  vwheel: S(`<circle cx="60" cy="45" r="30" fill="#1d1f22"/><circle cx="60" cy="45" r="24" fill="#33373c"/><circle cx="60" cy="45" r="14" fill="#c9cdd1"/><circle cx="60" cy="45" r="5" fill="#f4f6f7"/><circle cx="60" cy="45" r="30" fill="none" stroke="#4a4f55" stroke-width="3" stroke-dasharray="2 3"/>`),
+  ubracket: S(`<path d="M30 20 h12 v44 h36 v-44 h12 v56 h-60 z" fill="#c9d0d6" stroke="#8e9aa4"/><circle cx="36" cy="34" r="3" fill="#f4f6f7"/><circle cx="84" cy="34" r="3" fill="#f4f6f7"/>`),
+  zplate: S([30, 52].map(y => `<rect x="12" y="${y}" width="96" height="14" rx="1" fill="#c9d0d6" stroke="#8e9aa4"/>` + [22, 60, 98].map(x => `<circle cx="${x}" cy="${y + 7}" r="3" fill="#f4f6f7"/>`).join('')).join('')),
+  rope: S(`<rect x="34" y="20" width="52" height="50" rx="4" fill="#2c2f33"/><rect x="40" y="26" width="40" height="38" fill="#e8eef2"/>` + Array.from({ length: 9 }, (_, i) => `<line x1="40" y1="${28 + i * 4}" x2="80" y2="${28 + i * 4}" stroke="#9ec5e2" stroke-width="2"/>`).join('') + `<path d="M80 44 C100 44 96 70 112 76" stroke="#5aa0d0" stroke-width="1.6" fill="none"/>`),
+  shook: S(`<path d="M60 14 C76 14 76 38 60 38 C44 38 44 62 60 62 C76 62 76 78 66 80" stroke="#7c858d" stroke-width="5" fill="none" stroke-linecap="round"/>`),
+  basket: S(`<path d="M30 34 h60 l-6 44 h-48 z" fill="rgba(210,230,240,.8)" stroke="#8fb1c4" stroke-width="1.5"/><path d="M30 34 L60 8 L90 34" stroke="#5a6977" fill="none"/><circle cx="60" cy="8" r="3" fill="#7c858d"/>`),
+  cw: S(`<rect x="22" y="44" width="76" height="16" fill="#5a6168"/><rect x="26" y="30" width="68" height="14" fill="#6b737a"/><rect x="30" y="60" width="60" height="16" fill="#4c535a"/><text x="60" y="41" font-size="8" fill="#e3e6e8" text-anchor="middle" font-family="Arial">2 kg</text>`),
+  dowel: S(`<rect x="8" y="40" width="104" height="10" rx="5" fill="#e6c995" stroke="#c4a36d"/><line x1="20" y1="45" x2="100" y2="45" stroke="#d2b37d" stroke-dasharray="6 5"/>`),
+  bolt: S(bolt(70) + `<rect x="${92}" y="36" width="12" height="20" rx="1.5" fill="#8f969c"/><circle cx="98" cy="46" r="4" fill="#f4f6f7"/>`),
+  screw: S(bolt(40)),
+  setscrew: S(`<rect x="44" y="34" width="32" height="22" rx="2" fill="#2c2f33"/><polygon points="56,39 64,39 68,45 64,51 56,51 52,45" fill="#121416"/>`),
+  glue: S(`<path d="M44 30 h32 v46 a4 4 0 0 1 -4 4 h-24 a4 4 0 0 1 -4 -4 z" fill="#f4f6f7" stroke="#c9cdd1"/><rect x="54" y="14" width="12" height="16" fill="#e76f51"/><polygon points="57,4 63,4 66,14 54,14" fill="#e76f51"/><rect x="48" y="44" width="24" height="18" fill="#f2b71e"/>`),
+  paint: S(`<rect x="30" y="30" width="60" height="48" rx="3" fill="#c9cdd1"/><ellipse cx="60" cy="30" rx="30" ry="6" fill="#9aa3ab"/><rect x="38" y="44" width="44" height="20" fill="#2b78c2"/><path d="M30 34 C30 10 90 10 90 34" stroke="#7c858d" stroke-width="2" fill="none"/>`),
+  solder: S(`<circle cx="60" cy="45" r="28" fill="#2c2f33"/><circle cx="60" cy="45" r="22" fill="none" stroke="#b9bcc0" stroke-width="10"/><circle cx="60" cy="45" r="6" fill="#f4f6f7"/><path d="M88 45 C100 45 104 60 114 64" stroke="#b9bcc0" stroke-width="2" fill="none"/>`),
+  meter: S(`<rect x="34" y="8" width="52" height="78" rx="6" fill="#f2b71e"/><rect x="40" y="14" width="40" height="18" rx="2" fill="#a9c4a0"/><text x="60" y="27" font-size="10" fill="#1d3a12" text-anchor="middle" font-family="Courier New">0.65A</text><circle cx="60" cy="52" r="12" fill="#2c2f33"/><line x1="60" y1="52" x2="66" y2="44" stroke="#c9cdd1" stroke-width="2"/>${[44, 60, 76].map(x => `<circle cx="${x}" cy="76" r="3.5" fill="${x === 44 ? '#1d1f22' : '#d62828'}"/>`).join('')}`),
+  scale: S(`<rect x="16" y="40" width="88" height="36" rx="6" fill="#e8eef2" stroke="#b9c4cc"/><rect x="22" y="30" width="76" height="12" rx="4" fill="#c9d4dc"/><rect x="46" y="54" width="28" height="12" rx="2" fill="#1d1f22"/><text x="60" y="63" font-size="8" fill="#7ec850" text-anchor="middle" font-family="Courier New">1000g</text>`)
+};
+const PIC_KEYS = ['limit', 'acs', 'loadcell', 'ina', 'mcp', 'socket', 'motor', 'uno', 'nodemcu', 'l298n', 'pcf', 'lcd',
+  'adapter', 'dcjack', 'lm2596', 'diode', 'fuse', 'estop', 'rocker', 'btn3', 'btnred', 'key', 'leds', 'buzzer', 'transistor', 'panel',
+  'resistors', 'filmcap', 'ceramic', 'electrolytic', 'pcb', 'breadboard', 'headers', 'jst', 'terminal', 'wire', 'wire2', 'shielded', 'heatshrink', 'standoff', 'grommet', 'feet',
+  'drum', 'spacer', 'vwheel', 'ubracket', 'zplate', 'rope', 'shook', 'basket', 'cw', 'dowel',
+  'bolt', 'bolt', 'bolt', 'bolt', 'screw', 'screw', 'bolt', 'screw', 'setscrew', 'screw', 'glue', 'paint', 'solder', 'meter', 'scale'];
+
+const GROUPS = [{"t": "Sensors and signal conditioning", "rows": [{"i": "Limit switch", "n": "KW11-3Z roller lever micro switch", "s": "SPDT (COM / NO / NC), 5 A 250 V, ≈ 20 × 10 × 6 mm, roller lever", "q": "1 (+1)"}, {"i": "Current sensor", "n": "ACS712-05B module", "s": "±5 A, 185 mV/A, 5 V supply, analog output", "q": "1 (+1)"}, {"i": "Load cell", "n": "5 kg bar load cell (TAL220 / YZC-131 type)", "s": "80 × 12.7 × 12.7 mm, 4 wires. Read the label: 1 or 2 mV/V", "q": "1 (+1)"}, {"i": "Instrumentation amplifier", "n": "INA125P", "s": "DIP-16, instrumentation amplifier with reference", "q": "1 (+1)"}, {"i": "Reference buffer", "n": "MCP6002 (or LM358)", "s": "DIP-8 dual op-amp, rail-to-rail", "q": "1"}, {"i": "IC sockets", "n": "DIP-16 + DIP-8 sockets", "s": "2.54 mm pitch", "q": "2 + 1"}]}, {"t": "Motor (encoder built in)", "rows": [{"i": "Worm gear motor", "n": "JGY-370 12 V worm gear motor with Hall encoder", "s": "12 V, ≈ 20 RPM, ≥ 8 kg·cm, Ø6 mm D-shaft, self-locking, 6-wire encoder lead, with L-bracket", "q": "1"}]}, {"t": "Controller, Wi-Fi and motor driver", "rows": [{"i": "Controller", "n": "Arduino Uno R3 + USB cable", "s": "ATmega328P, 5 V", "q": "1"}, {"i": "Wi-Fi bridge", "n": "NodeMCU v3 ESP8266 (CH340)", "s": "3.3 V logic, micro-USB", "q": "1 (+1)"}, {"i": "Motor driver", "n": "L298N dual H-bridge module", "s": "5–35 V, 2 A per channel, on-board 5 V regulator", "q": "1"}, {"i": "I/O expander (panel)", "n": "PCF8574 I2C module", "s": "Address 0x20 (A0–A2 to GND)", "q": "1"}, {"i": "Display", "n": "LCD 1602 with I2C backpack", "s": "16 × 2 characters, 5 V, address 0x27", "q": "1"}]}, {"t": "Power and safety", "rows": [{"i": "Power adapter", "n": "12 V 2 A DC adapter", "s": "5.5 × 2.1 mm plug", "q": "1"}, {"i": "DC jack", "n": "Panel-mount DC jack 5.5 × 2.1", "s": "Fits the Ø8 hole in the back rib", "q": "1"}, {"i": "Buck converter", "n": "LM2596 adjustable module", "s": "12 V in → set to 5.00 V out, 3 A", "q": "1"}, {"i": "Reverse-polarity diode", "n": "1N5822 Schottky", "s": "3 A, 40 V", "q": "2"}, {"i": "Fuse", "n": "5 × 20 mm fuse holder + 2 A slow-blow fuses", "s": "Inline or panel type", "q": "1 + 3"}, {"i": "Emergency stop", "n": "22 mm mushroom E-stop, latching, 1NC (LAY37 / XB2 type)", "s": "Twist to release", "q": "1"}, {"i": "Power switch", "n": "KCD1 rocker switch", "s": "Snap-in, 19 × 13 mm cutout, 6 A", "q": "1"}]}, {"t": "Control panel parts", "rows": [{"i": "LIFT / LOWER / RESET", "n": "16 mm momentary push button, 1NO", "s": "Green, black, blue", "q": "3"}, {"i": "STOP button", "n": "16 mm momentary push button, 1NO1NC (3-pin)", "s": "Red. Wire the NC contact", "q": "1"}, {"i": "Mode key", "n": "16 mm key switch, 2-position, maintained", "s": "LOCAL / REMOTE", "q": "1"}, {"i": "LEDs", "n": "5 mm LEDs + 5 mm panel LED holders", "s": "Green, yellow, red", "q": "3 + 3"}, {"i": "Buzzer", "n": "5 V active buzzer", "s": "12 mm", "q": "1"}, {"i": "Buzzer driver", "n": "2N2222 NPN transistor", "s": "TO-92", "q": "1 (+1)"}, {"i": "Panel", "n": "3 mm acrylic or 3 mm MDF, laser-cut from the panel DXF", "s": "200 × 120 mm", "q": "1"}]}, {"t": "Resistors and capacitors", "rows": [{"i": "Resistors", "n": "1% metal-film resistor kit (or these values)", "s": "91 Ω (180 Ω if the cell is 2 mV/V), 910 Ω, 10 kΩ, 16 kΩ, 1 kΩ ×2, 2 kΩ, 4.7 kΩ ×2, 220 Ω ×3", "q": "1 kit"}, {"i": "Film capacitor", "n": "1 µF film", "s": "Load cell low-pass filter", "q": "1"}, {"i": "Ceramic capacitors", "n": "100 nF and 1 nF", "s": "100 nF decoupling; 1 nF ×2 encoder (optional)", "q": "10 + 2"}, {"i": "Electrolytic capacitors", "n": "100 µF 25 V", "s": "Supply smoothing", "q": "2"}]}, {"t": "PCB, connectors and wiring", "rows": [{"i": "Shield PCB", "n": "Custom PCB from the KiCad files", "s": "120 × 90 mm, 2-layer (JLCPCB or a local PCB maker)", "q": "5 (min. order)"}, {"i": "Prototype", "n": "Breadboard 830 points + jumper wires", "s": "M-M and M-F jumpers", "q": "1 set"}, {"i": "Pin headers", "n": "Male + female 2.54 mm, Arduino stacking headers", "s": "–", "q": "1 set"}, {"i": "Connectors", "n": "JST-XH kit (2–6 pin) + crimp tool", "s": "Housings + crimp pins", "q": "1 kit"}, {"i": "Screw terminals", "n": "5.08 mm screw terminal blocks", "s": "2- and 3-pin", "q": "6"}, {"i": "Signal wire", "n": "22 AWG silicone wire, multi-colour", "s": "–", "q": "10 m"}, {"i": "Power / motor wire", "n": "18 AWG wire, red + black", "s": "–", "q": "2 m each"}, {"i": "Shielded cable", "n": "4-core shielded cable", "s": "Load cell (encoder uses the motor lead + extension)", "q": "3 m"}, {"i": "Finishing", "n": "Heat-shrink, cable ties, adhesive cable clips", "s": "Assorted", "q": "1 set"}, {"i": "Standoffs", "n": "M3 nylon standoff kit", "s": "10 mm standoffs + screws + nuts", "q": "8 sets"}, {"i": "Grommet", "n": "Rubber grommet", "s": "For a Ø20 mm hole", "q": "1"}, {"i": "Feet", "n": "Rubber feet", "s": "Self-adhesive or screw-in", "q": "4"}]}, {"t": "Mechanical (non-MDF)", "rows": [{"i": "Rope drum", "n": "3D print, PETG, 40% infill, 4 walls", "s": "Ø30 × 40, flanges Ø42, Ø6 D-bore, Ø2 rope hole, M3 set-screw hole", "q": "1"}, {"i": "Load cell spacers", "n": "3D print PETG or aluminium", "s": "12 × 12 × 10 mm, Ø4.4 hole", "q": "2"}, {"i": "Pulley", "n": "624ZZ V-groove bearing wheel (3D-printer V-wheel)", "s": "Ø24, 4 mm bore", "q": "1"}, {"i": "Pulley U-bracket", "n": "Aluminium 3 mm, cut and bent (metal workshop)", "s": "30 × 78 flat, bends at 29 / 49 mm", "q": "1"}, {"i": "Load cell Z-plates", "n": "Aluminium 3 mm", "s": "80 × 20 mm, 3 × Ø4.4 holes", "q": "2"}, {"i": "Rope", "n": "Braided PE fishing line", "s": "0.6 mm, ≥ 30 kg", "q": "3 m"}, {"i": "Hook", "n": "Steel S-hook", "s": "≈ 40 mm", "q": "1"}, {"i": "Basket", "n": "Small plastic box + 4 cords", "s": "≈ 70 × 60 × 70 mm", "q": "1"}, {"i": "Counterweight", "n": "Steel pieces or sand bag", "s": "2.0 kg, fits 120 × 40 × 100 mm", "q": "1"}, {"i": "Dowel pins", "n": "Beech dowel rod Ø6", "s": "Cut to 35 / 20 mm pins", "q": "1 m"}]}, {"t": "Bolts and screws", "rows": [{"i": "M4 × 80 bolt", "n": "+ nylock nut + 2 washers", "s": "Motor plate (2), gussets (2)", "q": "4"}, {"i": "M4 × 60 bolt", "n": "+ nylock nut + washers", "s": "Brace cross-bolts", "q": "2"}, {"i": "M3 × 60 bolt", "n": "+ nut", "s": "Pulley U-bracket, up through the arm", "q": "2"}, {"i": "M3 × 65 bolt", "n": "+ nut", "s": "Switch bracket foot, up through the arm", "q": "2"}, {"i": "M2.5 × 12 screw", "n": "+ nut", "s": "Limit switch to its plate", "q": "2"}, {"i": "M4 × 12 screw", "n": "–", "s": "Load cell to the Z-plates (check the cell thread: M4 or M5)", "q": "4"}, {"i": "M3 × 25 bolt", "n": "+ nut", "s": "Motor bracket to the motor plate", "q": "2"}, {"i": "M3 × 6 screw", "n": "–", "s": "Motor face to its bracket", "q": "4"}, {"i": "M3 × 4 set screw", "n": "–", "s": "Drum on the D-shaft", "q": "1"}, {"i": "M3 × 12 screw", "n": "–", "s": "Control panel to the base", "q": "4"}]}, {"t": "Consumables and tools", "rows": [{"i": "Glue", "n": "PVA wood glue", "s": "250 g", "q": "1"}, {"i": "Finish", "n": "Primer + paint, sandpaper 120 / 240", "s": "–", "q": "1 set"}, {"i": "Soldering", "n": "Solder + flux, hot glue sticks", "s": "–", "q": "1 set"}, {"i": "Multimeter", "n": "Digital multimeter", "s": "Needed for the Milestone 1 current check", "q": "1"}, {"i": "Kitchen scale", "n": "Digital kitchen scale", "s": "To weigh the test bottles", "q": "1"}]}];
+const KEY = 'crane-shopping-v1';
+let ticks = {};
+try { ticks = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { ticks = {}; }
+let filter = 'all';
+const M1 = '1011111111001111110000000011110110011110001111111111111111111010111';   // 1 = needed for Milestone 1 (flat item order)
+const M1_NOTE = { 0: 'Fit it under the arm tip on the model; the app must show AT TOP / BELOW TOP.',
+  2: 'Hangs on the model between the rope and the basket (Z-mount). Read its mV/V label to pick the gain resistor.',
+  3: 'The conditioning amplifier: turns the 0–5 mV bridge signal into volts for the Uno.', 4: 'Buffers the 0.42 V reference for the INA125.', 5: 'So the chips can be swapped without soldering.',
+  6: 'Lifts the basket so the switch is pressed and the load cell carries the load.', 8: 'Sends the readings to the app over Wi-Fi.', 9: 'Lift, Lower and Stop from the app.',
+  14: 'Set to 5.00 V for the NodeMCU and logic.', 17: 'Cuts the motor power: keep it for the demo.',
+  26: 'For M1: 91 Ω (or 180 Ω for a 2 mV/V cell), 910 Ω, 10 kΩ, 16 kΩ, plus 1 kΩ + 2 kΩ for the serial divider.',
+  27: 'With the 16 kΩ resistor: the low-pass filter (≈ 10 Hz) before A0.', 28: '100 nF decoupling at the INA125, MCP6002 and modules.',
+  31: 'M1 can be wired on the breadboard; the PCB is for M2.', 37: 'Load cell cable from the hook up the arm to the electronics.',
+  43: 'Keep the load cell bar free to bend in the Z-mount.', 46: 'The Z-mount: rope on the top plate, basket on the bottom plate.',
+  47: 'Rope to the load cell top plate.', 49: 'Holds the test bottles.', 57: 'Load cell to the Z-plates (check the cell thread: M4 or M5).',
+  65: 'Check the 5 V excitation, the 0.42 V reference and the amplifier output.', 66: 'Weigh the test bottles (0.5, 1 and 1.5 kg) to check the weight reading.' };
+let tab = 'all';
+try { tab = localStorage.getItem('crane-shopping-tab') === 'm1' ? 'm1' : 'all'; } catch (e) { tab = 'all'; }
+const PKEY = 'crane-shopping-photos-v1';
+let photos = {};
+try { photos = JSON.parse(localStorage.getItem(PKEY) || '{}') || {}; } catch (e) { photos = {}; }
+let current = null;      // id of the item the viewer or photo picker is working on
+
+/**
+ * Saves the photos on this device.
+ * @returns {boolean} True if saved, false if the storage is full or unavailable.
+ */
+function savePhotos() { try { localStorage.setItem(PKEY, JSON.stringify(photos)); return true; } catch (e) { return false; } }
+
+/**
+ * Flat index of an item across all groups (matches the drawing list).
+ * @param {number} gi - Group index.
+ * @param {number} ri - Row index.
+ * @returns {number} Flat index.
+ */
+function flat(gi, ri) { let k = 0; for (let g = 0; g < gi; g++) k += GROUPS[g].rows.length; return k + ri; }
+
+/**
+ * Picture for an item: the saved photo if there is one, otherwise the drawing.
+ * @param {string} id - Item id 'g-r'.
+ * @returns {string} HTML.
+ */
+function picture(id) {
+  if (photos[id]) return `<img src="${photos[id]}" alt="Your photo">`;
+  const [gi, ri] = id.split('-').map(Number);
+  return PICS[PIC_KEYS[flat(gi, ri)]] || '';
+}
+
+/**
+ * Shrinks a chosen image to 480 px JPEG so many photos fit in the browser storage.
+ * @param {File} file - Image file.
+ * @returns {Promise<string>} Data URL.
+ */
+function shrink(file) {
+  return new Promise((ok, bad) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const k = Math.min(1, 480 / Math.max(img.width, img.height)), c = document.createElement('canvas');
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url); ok(c.toDataURL('image/jpeg', 0.72));
+    };
+    img.onerror = () => bad(new Error('This file is not an image the browser can read.'));
+    img.src = url;
+  });
+}
+
+/**
+ * Opens the large viewer for an item.
+ * @param {string} id - Item id.
+ * @returns {void}
+ */
+function openViewer(id) {
+  current = id;
+  const [gi, ri] = id.split('-').map(Number), r = GROUPS[gi].rows[ri];
+  document.getElementById('dv').innerHTML = picture(id);
+  document.getElementById('dt').textContent = r.i;
+  document.getElementById('dn').textContent = r.n;
+  document.getElementById('ds').textContent = r.s + ' (qty ' + r.q + ')';
+  document.getElementById('dAdd').textContent = photos[id] ? 'Replace photo' : 'Add photo';
+  document.getElementById('dDel').hidden = !photos[id];
+  document.getElementById('dh').textContent = photos[id] ? 'Showing your photo.' : 'Showing a drawing of the generic part.';
+  if (!document.getElementById('dlg').open) document.getElementById('dlg').showModal();
+}
+
+/**
+ * Saves the ticks on this device (silently skipped if storage is unavailable).
+ * @returns {void}
+ */
+function save() { try { localStorage.setItem(KEY, JSON.stringify(ticks)); } catch (e) { /* storage unavailable */ } }
+
+/**
+ * Escapes text for safe insertion into HTML.
+ * @param {string} s - Text.
+ * @returns {string} Escaped text.
+ */
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
+/**
+ * Draws every group and row for the current filter, and updates the progress bar.
+ * @returns {void}
+ */
+function render() {
+  let total = 0, done = 0;
+  document.getElementById('m1box').hidden = tab !== 'm1';
+  document.querySelectorAll('[data-tab]').forEach(x => x.setAttribute('aria-selected', x.dataset.tab === tab));
+  const html = GROUPS.map((g, gi) => {
+    let gIn = 0, gDone = 0;
+    const rows = g.rows.map((r, ri) => {
+      const id = gi + '-' + ri, on = !!ticks[id], k = flat(gi, ri);
+      if (tab === 'm1' && M1[k] !== '1') return '';
+      gIn++; if (on) gDone++;
+      total++; if (on) done++;
+      if ((filter === 'todo' && on) || (filter === 'done' && !on)) return '';
+      return `<li class="${on ? 'on' : ''}"><label><input type="checkbox" data-id="${id}" ${on ? 'checked' : ''}>
+        <button type="button" class="th" data-view="${id}" aria-label="View ${esc(r.i)}">${picture(id)}${photos[id] ? '<span class="tag">photo</span>' : ''}</button>
+        <span><span class="it">${esc(r.i)}</span><span class="nm">${esc(r.n)}</span><span class="spec">${esc(r.s)}</span>${tab === 'm1' && M1_NOTE[k] ? `<span class="m1n">${esc(M1_NOTE[k])}</span>` : ''}
+        <button type="button" class="ph" data-photo="${id}">${photos[id] ? 'Replace photo' : 'Add photo'}</button></span>
+        <span class="q">${esc(r.q)}</span></label></li>`;
+    }).join('');
+    if (!gIn) return '';
+    return `<section><h2>${esc(g.t)}<span class="g">${gDone} of ${gIn}</span></h2><ul>${rows || '<li class="empty">Nothing here for this view.</li>'}</ul></section>`;
+  }).join('');
+  document.getElementById('list').innerHTML = html;
+  document.getElementById('count').innerHTML = `${done}<small>of ${total} bought${tab === 'm1' ? ' for Milestone 1' : ''}</small>`;
+  const f = document.getElementById('fill');
+  f.style.width = (total ? done / total * 100 : 0) + '%';
+  f.classList.toggle('full', done === total && total > 0);
+}
+
+document.getElementById('list').addEventListener('change', e => {
+  const id = e.target.dataset.id; if (!id) return;
+  if (e.target.checked) ticks[id] = true; else delete ticks[id];
+  save(); render();
+});
+document.getElementById('list').addEventListener('click', e => {
+  const v = e.target.closest('[data-view]'), ph = e.target.closest('[data-photo]');
+  if (v) { e.preventDefault(); openViewer(v.dataset.view); }
+  else if (ph) { e.preventDefault(); current = ph.dataset.photo; document.getElementById('file').click(); }
+});
+document.getElementById('file').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = '';
+  if (!f || !current) return;
+  try {
+    const old = photos[current];
+    photos[current] = await shrink(f);
+    if (!savePhotos()) { if (old) photos[current] = old; else delete photos[current]; alert('The browser storage is full. Remove a few photos, then try again.'); }
+  } catch (err) { alert(err.message); }
+  render();
+  if (document.getElementById('dlg').open) openViewer(current);
+});
+document.getElementById('dAdd').addEventListener('click', () => document.getElementById('file').click());
+document.getElementById('dDel').addEventListener('click', () => { delete photos[current]; savePhotos(); render(); openViewer(current); });
+document.getElementById('dClose').addEventListener('click', () => document.getElementById('dlg').close());
+document.getElementById('dlg').addEventListener('click', e => { if (e.target.id === 'dlg') e.target.close(); });
+document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => {
+  tab = b.dataset.tab;
+  try { localStorage.setItem('crane-shopping-tab', tab); } catch (e) { /* storage unavailable */ }
+  render();
+}));
+document.querySelectorAll('[data-f]').forEach(b => b.addEventListener('click', () => {
+  filter = b.dataset.f;
+  document.querySelectorAll('[data-f]').forEach(x => x.setAttribute('aria-pressed', x === b));
+  render();
+}));
+document.getElementById('reset').addEventListener('click', () => { if (confirm('Clear all ticks on this device?')) { ticks = {}; save(); render(); } });
+document.getElementById('print').addEventListener('click', () => window.print());
+render();
+</script>
+</body>
+</html>

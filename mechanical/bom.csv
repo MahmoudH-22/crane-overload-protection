@@ -1,0 +1,32 @@
+Part no.,Name,Qty,Make/Buy,Material,Size X x Y x Z (mm),Mass (g),Notes,STEP file
+CR-01,Base board,1,Make,MDF 18 mm,450.0 x 18.0 x 300.0,1820,Cut 450 x 300 from 18 mm MDF; drill per base template DXF.,CR-01_Base_board.step
+CR-02,Mast,1,Make,Pine 40 x 40,40.0 x 550.0 x 40.0,439,"Cut 550 long, square ends.",CR-02_Mast.step
+CR-03,Arm,1,Make,Pine 40 x 40,450.0 x 40.0 x 40.0,360,Cut 450 long; pulley bracket screws at x = 392 / 408 (pilot 2.5).,CR-03_Arm.step
+CR-04,Diagonal brace,1,Make,Pine 20 x 40,193.5 x 214.9 x 40.0,108,Cut 249 mm long on the long edge; ends cut at 48 / 42 deg to sit flush on mast and arm.,CR-04_Diagonal_brace.step
+CR-05,L-bracket 50 (mast-base),2,Buy,"Steel 2 mm, bought",15.0 x 50.0 x 50.0,22,Hardware store 50 x 50 x 15 angle bracket; 4 x wood screws 4 x 20.,CR-05_L-bracket_50.step
+CR-06,Corner plate (mast-arm),2,Buy,"Steel 2 mm, bought",80.0 x 90.0 x 2.0,112,"80 x 90 mending plate, or cut from 2 mm steel; glue joint as well.",CR-06_Corner_plate.step
+CR-07,Counterweight,1,Make,"Steel plates / sand-filled box, 2.0 kg",120.0 x 45.0 x 120.0,2000,Stack steel plates to 2.0 kg; M5 bolts through the base.,CR-07_Counterweight.step
+CR-08,Motor plate,1,Make,MDF 10 mm,10.0 x 90.0 x 200.0,134,Cut 200 x 90 from 10 mm MDF; drill per DXF.,CR-08_Motor_plate.step
+CR-09,Worm gear motor JGY-370 12 V,1,Buy,Bought (simplified),41.0 x 44.0 x 80.0,,"JGY-370, 10-30 rpm, rated >= 8 kg.cm, 6 mm D-shaft.",CR-09_Worm_gear_motor_JGY-370_12_V.step
+CR-10,Rope drum,1,Make,"PLA, 3D printed, 40 % infill",42.0 x 42.0 x 46.0,18,Print upright; M3 grub screw onto the motor shaft flat; rope through the 2 mm hole and knotted.,CR-10_Rope_drum.step
+CR-11,Stub shaft 6 mm,1,Make,Steel rod 6 mm,6.0 x 6.0 x 32.0,7,Cut 32 mm of 6 mm silver steel; glue/press into the drum bore from the encoder side.,CR-11_Stub_shaft_6_mm.step
+CR-12,Flexible coupler 6-6,1,Buy,"Aluminium, bought",19.0 x 19.0 x 25.0,17,19 x 25 mm 6-6 mm jaw / beam coupler.,CR-12_Flexible_coupler_6-6.step
+CR-13,Encoder 600 P/R (LPD3806),1,Buy,Bought (simplified),38.0 x 38.0 x 51.0,,"600 P/R, NPN open-collector A/B, 6 mm shaft.",CR-13_Encoder_600_P-R.step
+CR-14,Encoder bracket,1,Make,Aluminium 3 mm (or PLA),55.0 x 85.0 x 33.0,55,Bend 90 deg (or print). Check the encoder flange screw spacing before drilling.,CR-14_Encoder_bracket.step
+CR-15,Pulley wheel 24 mm (624ZZ),1,Buy,"Aluminium V-groove with 624ZZ, bought",24.0 x 24.0 x 6.0,6,V-groove wheel OD 24 with 4 mm bore bearing.,CR-15_Pulley_wheel_24_mm.step
+CR-16,Pulley U-bracket,1,Make,Aluminium 3 mm (or PLA),30.0 x 28.0 x 13.2,15,"Bend from 3 mm aluminium strip or print; 1 wood screw into the arm + glue, or 2 screws with a wider base.",CR-16_Pulley_U-bracket.step
+CR-17,Pulley axle M4 x 20,1,Buy,"Steel bolt + nylock, bought",7.0 x 7.0 x 20.0,3,,CR-17_Pulley_axle_M4_x_20.step
+CR-18,Limit switch (roller micro switch),1,Buy,Bought (simplified),20.5 x 24.5 x 6.0,,SPDT roller lever micro switch; wire COM + NO to A2/GND.,CR-18_Limit_switch.step
+CR-19,Limit switch mount,1,Make,"PLA, 3D printed",25.0 x 15.0 x 10.0,2,Print; slot the switch holes 3 mm long to adjust the trip point.,CR-19_Limit_switch_mount.step
+CR-20,Z-mount top plate,1,Make,Aluminium 3 mm,80.0 x 3.0 x 20.0,13,Rope eye bolt in the centre hole; load cell left end screw at x - 32.,CR-20_Z-mount_top_plate.step
+CR-21,Spacer 12 x 12 x 10,2,Make,Aluminium / PLA,12.0 x 10.0 x 12.0,4,,CR-21_Spacer_12_x_12_x_10.step
+CR-22,Load cell 5 kg (TAL220 type),1,Buy,Bought (simplified),80.0 x 12.7 x 12.7,,"80 x 12.7 x 12.7 bar, 1-2 mV/V, arrow pointing down.",CR-22_Load_cell_5_kg.step
+CR-23,Z-mount bottom plate,1,Make,Aluminium 3 mm,80.0 x 3.0 x 20.0,13,S-hook eye in the centre hole; load cell right end screw at x + 32.,CR-23_Z-mount_bottom_plate.step
+CR-24,S-hook,1,Buy,"Steel, bought",20.0 x 30.0 x 4.0,5,,CR-24_S-hook.step
+CR-25,Basket 70 x 60 x 70,1,Buy,"Plastic, bought",70.0 x 60.0 x 70.0,,Small plastic basket; 4 strings to the hook.,CR-25_Basket_70_x_60_x_70.step
+CR-26,Electronics box,1,Buy,ABS project box 200 x 120 x 75,200.0 x 72.0 x 120.0,,Bought box; drill the side panel and floor per DXF.,CR-26_Electronics_box.step
+CR-27,Lid with control panel,1,Make,ABS lid 3 mm (box lid),200.0 x 3.0 x 120.0,,"Drill / cut per lid DXF; 16 mm buttons, 22 mm E-stop, 19 mm key switch.",CR-27_Lid_with_control_panel.step
+CR-28,Shield PCB 120 x 90,1,Make,"FR-4 1.6 mm, ordered",120.0 x 1.6 x 90.0,,KiCad design; Gerbers in hardware/.,CR-28_Shield_PCB_120_x_90.step
+CR-29,Standoff M3 x 14,4,Buy,"Brass, bought",5.5 x 14.0 x 5.5,,,CR-29_Standoff_M3_x_14.step
+CR-30,Arduino Uno R3,1,Buy,Bought (simplified),68.6 x 1.6 x 53.3,,,CR-30_Arduino_Uno_R3.step
+CR-31,L298N module,1,Buy,Bought (simplified),43.0 x 26.0 x 43.0,,,CR-31_L298N_module.step

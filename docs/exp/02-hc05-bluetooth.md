@@ -70,7 +70,15 @@ D0 / D1 are the Uno's hardware serial port, which is **wired to the USB chip**. 
 
 So the HC-05 uses **SoftwareSerial** on two ordinary pins. D10 works as a SoftwareSerial RX because it has a pin-change interrupt (on the Uno all pins do). 9600 baud is used because SoftwareSerial is reliable at that speed and it is the HC-05's factory data speed. One live line (~50 characters) every 200 ms is only about 250 bytes/s, well under the ~960 bytes/s that 9600 baud carries.
 
-### 6. EN and STATE stay unconnected
+### 6. Full crane: the HC-05 moves to D8 / D9 (AltSoftSerial)
+SoftwareSerial switches interrupts off for ~1 ms per byte it sends. That's fine now, but the motor's Hall encoder (added later) sends pulses every ~0.5–1 ms, and those would be lost. **AltSoftSerial** keeps interrupts on, but its pins are fixed: **RX = D8, TX = D9**. When the motor is added:
+- HC-05 TXD → **D8** (instead of D10)
+- Uno **D9** → 1 kΩ → HC-05 RXD with the same divider (instead of D11)
+- Firmware: `AltSoftSerial bt;` instead of `SoftwareSerial bt(10, 11);`, pins in `config.h`.
+
+D10 / D11 then go to the L298N IN2 and the ultrasonic Echo. Details: `05-motor-l298n-encoder.md`, section 5.
+
+### 7. EN and STATE stay unconnected
 - **EN (KEY)**: when HIGH at power-up (or the button is held) the HC-05 starts in **AT mode** at 38400 baud, the settings mode, and is **not** discoverable. In normal use it must stay low, so it is left open.
 - **STATE**: goes HIGH when a phone is connected. Not needed: the Uno already knows the app is there because the app sends PING every second.
 

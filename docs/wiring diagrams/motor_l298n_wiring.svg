@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1640 1400" width="1640" height="1400">
+<rect width="1640" height="1400" fill="#f7f7f5"/>
+<text x="40" y="52" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="bold" fill="#222" text-anchor="start">Motor GA25-370 12 V with Hall encoder + L298N → Arduino Uno</text>
+<text x="40" y="84" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" fill="#555" text-anchor="start">Arrows marked 5V go to the Uno 5V pin; every ground symbol joins the Uno GND and the 12 V supply −. Motor power never comes from the Uno.</text>
+<rect x="60" y="120" width="320" height="780" rx="16" fill="#1f6fa8"/>
+<text x="220.0" y="510.0" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="bold" fill="white" text-anchor="middle">Arduino</text>
+<text x="220.0" y="538.0" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" fill="#dfe6ea" text-anchor="middle">UNO R3</text>
+<rect x="368" y="288" width="24" height="24" fill="#222"/>
+<text x="358" y="307" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="white" text-anchor="end">D5</text>
+<rect x="368" y="368" width="24" height="24" fill="#222"/>
+<text x="358" y="387" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="white" text-anchor="end">D7</text>
+<rect x="368" y="528" width="24" height="24" fill="#222"/>
+<text x="358" y="547" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="white" text-anchor="end">D10</text>
+<rect x="368" y="688" width="24" height="24" fill="#222"/>
+<text x="358" y="707" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="white" text-anchor="end">D2</text>
+<rect x="368" y="768" width="24" height="24" fill="#222"/>
+<text x="358" y="787" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="white" text-anchor="end">D3</text>
+<rect x="368" y="848" width="24" height="24" fill="#222"/>
+<text x="358" y="867" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="white" text-anchor="end">GND</text>
+<rect x="640" y="220" width="300" height="400" rx="16" fill="#3c4043"/>
+<text x="790.0" y="260" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="bold" fill="white" text-anchor="middle">L298N</text>
+<text x="790.0" y="288" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" fill="#dfe6ea" text-anchor="middle">H-bridge driver</text>
+<rect x="628" y="288" width="24" height="24" fill="#222"/>
+<text x="662" y="307" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="white" text-anchor="start">ENA</text>
+<rect x="628" y="368" width="24" height="24" fill="#222"/>
+<text x="662" y="387" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="white" text-anchor="start">IN1</text>
+<rect x="628" y="528" width="24" height="24" fill="#222"/>
+<text x="662" y="547" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="white" text-anchor="start">IN2</text>
+<rect x="928" y="288" width="24" height="24" fill="#222"/>
+<text x="918" y="307" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="white" text-anchor="end">OUT1</text>
+<rect x="928" y="528" width="24" height="24" fill="#222"/>
+<text x="918" y="547" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="white" text-anchor="end">OUT2</text>
+<rect x="708" y="608" width="24" height="24" fill="#222"/>
+<text x="720" y="598" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">+12V</text>
+<rect x="848" y="608" width="24" height="24" fill="#222"/>
+<text x="860" y="598" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">GND</text>
+<text x="790" y="652" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" fill="#666" text-anchor="middle">remove the ENA jumper · leave the 5V terminal unconnected</text>
+<polyline points="380,300 640,300" fill="none" stroke="#f57c00" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="400" y="288" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" fill="#333" text-anchor="start" paint-order="stroke" stroke="#f7f7f5" stroke-width="6">D5 → ENA (PWM = speed)</text>
+<polyline points="380,380 640,380" fill="none" stroke="#e0b000" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="436" y="372" width="68" height="16" fill="#f7f7f5"/>
+<circle cx="440" cy="380" r="7" fill="#f7f7f5" stroke="#111" stroke-width="3"/>
+<circle cx="500" cy="380" r="7" fill="#f7f7f5" stroke="#111" stroke-width="3"/>
+<line x1="440" y1="371" x2="500" y2="371" stroke="#111" stroke-width="4"/>
+<line x1="470" y1="371" x2="470" y2="350" stroke="#111" stroke-width="4"/>
+<text x="470" y="340" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="bold" fill="#222" text-anchor="middle">Top limit switch</text>
+<circle cx="560" cy="380" r="8" fill="#222"/>
+<polyline points="560,380 560,410" fill="none" stroke="#777777" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="546.0" y="415.0" width="28" height="60" rx="10" fill="#ead7a6" stroke="#8a6d3b" stroke-width="3"/>
+<text x="584" y="451" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" fill="#5d4037" text-anchor="start">10 kΩ</text>
+<text x="584" y="473" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="normal" fill="#666" text-anchor="start">pull-down</text>
+<polyline points="560,475 560,485" fill="none" stroke="#777777" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="560" y1="485" x2="560" y2="503" stroke="#111" stroke-width="4"/>
+<line x1="542" y1="503" x2="578" y2="503" stroke="#111" stroke-width="4"/>
+<line x1="549" y1="510" x2="571" y2="510" stroke="#111" stroke-width="4"/>
+<line x1="556" y1="517" x2="564" y2="517" stroke="#111" stroke-width="4"/>
+<polyline points="380,540 640,540" fill="none" stroke="#1e88e5" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="400" y="528" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" fill="#333" text-anchor="start" paint-order="stroke" stroke="#f7f7f5" stroke-width="6">D10 → IN2</text>
+<text x="395" y="420" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="normal" fill="#333" text-anchor="start">COM–NC</text>
+<text x="395" y="440" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="normal" fill="#333" text-anchor="start">D7 → switch → IN1</text>
+<polyline points="720,620 720,1040" fill="none" stroke="#d32f2f" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="710" y="745" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="bold" fill="#d32f2f" text-anchor="end" paint-order="stroke" stroke="#f7f7f5" stroke-width="6">+12 V</text>
+<rect x="560" y="820" width="270" height="130" rx="10" fill="#fff3e0" stroke="#f57c00" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="695" y="846" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="bold" fill="#e65100" text-anchor="middle">Power switch + E-stop (NC)</text>
+<text x="695" y="866" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" fill="#e65100" text-anchor="middle">in series, on the control panel</text>
+<text x="695" y="886" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" fill="#e65100" text-anchor="middle">(control_panel_wiring.svg)</text>
+<rect x="686" y="917" width="68" height="16" fill="#f7f7f5"/>
+<circle cx="690" cy="925" r="7" fill="#f7f7f5" stroke="#111" stroke-width="3"/>
+<circle cx="750" cy="925" r="7" fill="#f7f7f5" stroke="#111" stroke-width="3"/>
+<line x1="690" y1="916" x2="750" y2="916" stroke="#111" stroke-width="4"/>
+<line x1="720" y1="916" x2="720" y2="895" stroke="#111" stroke-width="4"/>
+<text x="720" y="885" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="bold" fill="#222" text-anchor="middle"></text>
+<polyline points="860,620 860,1040" fill="none" stroke="#111111" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="620" y="1040" width="340" height="80" rx="16" fill="#5d4037"/>
+<text x="790.0" y="1080.0" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="bold" fill="white" text-anchor="middle">12 V supply ≥ 2 A</text>
+<text x="705" y="1030" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="bold" fill="#d32f2f" text-anchor="middle">+</text>
+<text x="875" y="1030" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="bold" fill="#111111" text-anchor="middle">−</text>
+<polyline points="380,860 470,860 470,990 860,990" fill="none" stroke="#111111" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="480" y="1012" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="normal" fill="#333" text-anchor="start">Uno GND ↔ supply − (common ground)</text>
+<circle cx="860" cy="990" r="8" fill="#222"/>
+<rect x="1210" y="180" width="300" height="700" rx="16" fill="#3c4043"/>
+<text x="1360.0" y="220" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="bold" fill="white" text-anchor="middle">GA25-370 12 V</text>
+<text x="1360.0" y="248" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" fill="#dfe6ea" text-anchor="middle">gear motor + Hall encoder</text>
+<rect x="1198" y="288" width="24" height="24" fill="#222"/>
+<text x="1232" y="307" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="white" text-anchor="start">M+ (red)</text>
+<rect x="1198" y="528" width="24" height="24" fill="#222"/>
+<text x="1232" y="547" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="white" text-anchor="start">M− (white)</text>
+<line x1="1230" y1="620" x2="1490" y2="620" stroke="#888" stroke-width="2" stroke-dasharray="6 6"/>
+<text x="1360" y="650" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="normal" fill="#dfe6ea" text-anchor="middle">encoder board (back of the motor)</text>
+<polyline points="940,540 1210,540" fill="none" stroke="#111111" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="980" y="528" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" fill="#333" text-anchor="start" paint-order="stroke" stroke="#f7f7f5" stroke-width="6">OUT2 → M−</text>
+<polyline points="940,300 1210,300" fill="none" stroke="#d32f2f" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="980" y="288" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" fill="#333" text-anchor="start" paint-order="stroke" stroke="#f7f7f5" stroke-width="6">OUT1 → M+</text>
+<text x="1360" y="910" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="normal" fill="#666" text-anchor="middle">Lifts the wrong way? swap M+ and M−</text>
+<rect x="1198" y="688" width="24" height="24" fill="#222"/>
+<text x="1232" y="707" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="white" text-anchor="start">C1 / A (yellow)</text>
+<rect x="1198" y="768" width="24" height="24" fill="#222"/>
+<text x="1232" y="787" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="white" text-anchor="start">C2 / B (green)</text>
+<text x="1360" y="835" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="normal" fill="#dfe6ea" text-anchor="middle">blue → 5V · black → GND</text>
+<text x="1360" y="860" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" fill="#dfe6ea" text-anchor="middle">usual colours: check the board label</text>
+<polyline points="1210,700 380,700" fill="none" stroke="#2e9d48" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="400" y="688" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" fill="#333" text-anchor="start" paint-order="stroke" stroke="#f7f7f5" stroke-width="6">A → D2 (interrupt)</text>
+<polyline points="1210,780 380,780" fill="none" stroke="#9aa0a6" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="400" y="768" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" fill="#333" text-anchor="start" paint-order="stroke" stroke="#f7f7f5" stroke-width="6">B → D3 (interrupt)</text>
+<circle cx="1040" cy="700" r="8" fill="#222"/>
+<polyline points="1040,700 1040,680" fill="none" stroke="#777777" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="1026.0" y="620.0" width="28" height="60" rx="10" fill="#ead7a6" stroke="#8a6d3b" stroke-width="3"/>
+<text x="1064" y="656" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" fill="#5d4037" text-anchor="start">4.7 kΩ</text>
+<line x1="1040" y1="620" x2="1040" y2="598" stroke="#d32f2f" stroke-width="4"/>
+<polygon points="1030,600 1050,600 1040,584" fill="#d32f2f"/>
+<text x="1040" y="576" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="bold" fill="#d32f2f" text-anchor="middle">5V</text>
+<circle cx="1110" cy="780" r="8" fill="#222"/>
+<polyline points="1110,780 1110,800" fill="none" stroke="#777777" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="1096.0" y="800.0" width="28" height="60" rx="10" fill="#ead7a6" stroke="#8a6d3b" stroke-width="3"/>
+<text x="1134" y="836" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" fill="#5d4037" text-anchor="start">4.7 kΩ</text>
+<line x1="1110" y1="860" x2="1110" y2="882" stroke="#d32f2f" stroke-width="4"/>
+<polygon points="1100,880 1120,880 1110,896" fill="#d32f2f"/>
+<text x="1110" y="918" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="bold" fill="#d32f2f" text-anchor="middle">5V</text>
+<text x="1060" y="950" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" fill="#666" text-anchor="middle">4.7 kΩ pull-ups to 5V (needed if the encoder board has none)</text>
+<rect x="30" y="1150" width="1580" height="230" rx="10" fill="#ffffff" stroke="#d9d9d9" stroke-width="2"/>
+<text x="52" y="1184" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="bold" fill="#222" text-anchor="start">Notes</text>
+<text x="52" y="1216" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" fill="#333" text-anchor="start">• L298N: D5 → ENA (PWM speed), D7 → IN1, D10 → IN2. IN1 HIGH + IN2 LOW = LIFT, IN1 LOW + IN2 HIGH = LOWER, both LOW = brake.</text>
+<text x="52" y="1246" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" fill="#333" text-anchor="start">• Top limit switch (COM–NC) in the IN1 wire + 10 kΩ pull-down: at the top it opens, IN1 falls LOW and the motor cannot lift any more, even if the code is wrong.</text>
+<text x="52" y="1276" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" fill="#333" text-anchor="start">• 12 V supply → power switch → E-stop (NC) → L298N +12V: pressing the E-stop cuts motor power in hardware.</text>
+<text x="52" y="1306" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" fill="#333" text-anchor="start">• Common ground: L298N GND, 12 V supply −, Uno GND and the encoder black wire all connected.</text>
+<text x="52" y="1336" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" fill="#333" text-anchor="start">• GA25-370 encoder (on the motor shaft, 11 pulses per motor turn): blue 5V, black GND, yellow C1 → D2, green C2 → D3. Pulses per drum turn = 11 × gear ratio.</text>
+<text x="52" y="1366" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" fill="#333" text-anchor="start">• D8 / D9 are kept for the HC-05 on AltSoftSerial: the fast encoder pulses would be lost with SoftwareSerial.</text>
+</svg>

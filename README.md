@@ -3,10 +3,11 @@
 The full step-by-step build is in the project guide (`crane-project-guide.html` → "Implementation A–Z").
 
 Quick start:
-1. `broker/`: run `mosquitto -c mosquitto.conf -v` on the laptop (on the phone hotspot).
-2. `firmware/uno/crane_uno`: set the feature flags, then upload to the Uno.
-3. `firmware/nodemcu/crane_nodemcu`: set the Wi-Fi and broker IP, then upload to the NodeMCU ("NodeMCU 1.0 (ESP-12E Module)").
-4. `app/`: `flutter pub get`, then `flutter run`. Enter the laptop IP on the connect screen.
-5. No hardware? `mosquitto -c tools/mosquitto.conf -v` and `python tools/crane_sim.py` (needs `pip install paho-mqtt`).
+1. `firmware/uno/crane_uno_m2`: set the parts in `config.h`, then upload to the Uno (see its `README.md`).
+2. Pair the HC-05 with the Android phone (Settings → Bluetooth, PIN 1234). Not found? Reset it with `firmware/uno/hc05_setup`.
+3. `app/`: `flutter pub get`, then `flutter run`. Connect → Crane → pick the HC-05.
+4. No hardware? `mosquitto -c tools/mosquitto.conf -v` and `python tools/crane_sim.py` (needs `pip install paho-mqtt`), then Connect → Simulator with the laptop IP.
+
+Wiring and why: `docs/exp/`. App summary: `docs/app-design.md`.
 
 Read `CLAUDE.md` first. Log daily work in `history/`.

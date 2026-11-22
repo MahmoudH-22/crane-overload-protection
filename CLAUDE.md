@@ -129,7 +129,7 @@ g++ -std=c++17 -Wall -Wextra -I firmware/uno/crane_uno_m2 firmware/test/link_tes
 ## Docs
 - `docs/exp/`: one file per wiring, how and why each connection is made: `01-overview-power-and-pins.md` (pin map, shared 5V/GND, current budget, logic levels), `02-hc05-bluetooth.md`, `03-ir-top-sensor.md`, `04-load-cell-ad620.md` (AD620 gain, LM358 REF 1.56 V, RC filter). Diagrams in `docs/wiring diagrams/`.
 - `firmware/uno/crane_uno_m2/README.md`: what each firmware file does, data flow, how to add a part.
-- `docs/app-design.md`: app design and features (screens, controls, enable rules, connection health, MQTT summary, architecture). Keep it in step with this file.
+- `docs/app-design.md`: short summary of the app (screens, rules, how it talks to the Uno over the HC-05 with examples, code structure). Keep it in step with this file.
 - `docs/hardware-bringup.md`: wiring Uno <-> HC-05, pairing, upload, what the app should show, troubleshooting.
 - `docs/crane-system-guide.md`: one-document overview for the team: current status, app design, data flow app <-> HC-05 <-> Uno (with worked examples), wiring, and the full step-by-step to see weight + IR in the app (pairing, uploads, checks, calibration, troubleshooting). Update its status table when milestones change.
 

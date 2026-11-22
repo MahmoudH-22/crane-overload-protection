@@ -288,7 +288,7 @@ def motor(with_current_sensor):
     s.h = 1150 + 70 + 30 * len(lines)
     s.parts[0] = f'<rect width="{s.w}" height="{s.h}" fill="#f7f7f5"/>'
     s.notes(1150, lines)
-    s.save("motor_l298n_acs712_wiring.svg" if with_current_sensor else "motor_l298n_wiring.svg")
+    s.save("motor_l298n_acs712_wiring_with_current_sensor.svg" if with_current_sensor else "motor_l298n_wiring.svg")
 
 
 def ultrasonic():

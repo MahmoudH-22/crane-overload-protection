@@ -5,7 +5,7 @@ The hoist motor winds the rope on the drum to lift and lower the basket. The Uno
 | Diagram | When |
 |---|---|
 | ![Motor without current sensor](<../wiring diagrams/motor_l298n_wiring.svg>) | motor + encoder + driver only (no jam detection) |
-| ![Motor with ACS712](<../wiring diagrams/motor_l298n_acs712_wiring.svg>) | full version: + ACS712 in series with the motor (jam detection) |
+| ![Motor with ACS712](<../wiring diagrams/motor_l298n_acs712_wiring_with_current_sensor.svg>) | full version: + ACS712 in series with the motor (jam detection) |
 
 Parts: **GA25-370 12 V gear motor with Hall encoder** (`docs/datasheets/GA25-370 motor datasheet.pdf`), L298N module, roller limit switch at the top, ACS712-5A.
 

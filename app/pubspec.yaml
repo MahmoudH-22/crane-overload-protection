@@ -1,22 +1,30 @@
 name: crane_monitor
-description: Remote monitor and control for the crane overload protection system.
+description: "A new Flutter project."
 publish_to: 'none'
-version: 1.0.0+1
+version: 0.1.0+1
 
 environment:
-  sdk: '>=3.4.0 <4.0.0'   # Flutter 3.22 or newer
+  sdk: ^3.13.2
 
 dependencies:
+  fl_chart: ^1.3.1
   flutter:
     sdk: flutter
-  flutter_riverpod: ^2.5.1
-  mqtt_client: ^10.2.1
-  shared_preferences: ^2.2.3
+  flutter_blue_classic: ^0.1.1
+  flutter_riverpod: ^3.5.0
+  freezed_annotation: ^3.1.0
+  go_router: ^18.1.4
+  json_annotation: ^4.12.0
+  mqtt_client: ^10.14.0
+  shared_preferences: ^2.5.6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
+  flutter_lints: ^6.0.0
+  build_runner: ^2.17.1
+  freezed: ^4.0.3
+  json_serializable: ^6.15.2
 
 flutter:
   uses-material-design: true

@@ -1,0 +1,19 @@
+CRANE OVERLOAD - 3D PRINT JOB
+=============================
+Material: PETG for everything.  No supports.  Every file is already turned the right way: just place it on the bed.
+Slicer: elephant-foot compensation about 0.2 mm.
+
+ORDER: print 00 + one copy of 03 first (about 10 min) and check the fits, then print the rest.
+
+FILE                                  COPIES  SETTINGS
+00_tolerance_test_PRINT_FIRST.stl        1    100% infill
+01_load_cell_z_part_PRINT_x2.stl         2    4 walls, 50% infill (printed on its side, as placed)
+02_pulley_wheel.stl                      1    100% infill, 0.12-0.16 mm layers
+03_pulley_sleeve.stl                     2    100% infill (one is for the fit test)
+04_pulley_spacers_x2.stl                 1    100% infill (the file already holds the 2 rings)
+05_pulley_u_bracket.stl                  1    5 walls, 60% infill
+06_motor_bracket_base.stl                1    5 walls, 60% infill
+07_rope_drum.stl                         1    100% infill, 0.16 mm layers
+08_drum_outboard_support.stl             1    5 walls, 60% infill
+
+Total: 11 prints, under 100 g of PETG (about 98 g if everything were solid; less with the partial infill).

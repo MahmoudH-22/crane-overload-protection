@@ -7,7 +7,7 @@ The hoist motor winds the rope on the drum to lift and lower the basket. The Uno
 | ![Motor without current sensor](<../wiring diagrams/motor_l298n_wiring.svg>) | motor + encoder + driver only (no jam detection) |
 | ![Motor with ACS712](<../wiring diagrams/motor_l298n_acs712_wiring_with_current_sensor.svg>) | full version: + ACS712 in series with the motor (jam detection) |
 
-Parts: **GA25-370 12 V gear motor with Hall encoder** (`docs/datasheets/GA25-370 motor datasheet.pdf`), L298N module, roller limit switch at the top, ACS712-5A.
+Parts: **25GA370 12 V, 45 : 1 (≈ 130 rpm) gear motor with Hall encoder** (`docs/datasheets/GA25-370 motor datasheet.pdf`), L298N module, roller limit switch at the top, ACS712-5A. Mechanical design: `mechanical/design/crane-structure-3d.html`.
 
 ---
 
@@ -62,32 +62,51 @@ The encoder is a small board on the back of the motor with one 6-pin connector. 
 
 ---
 
-## 2. Which GA25-370? Check the label
+## 2. The hoist drive: how the drum turns
 
-"GA25-370" is a family: the same 25 mm motor with different gearboxes. The label (e.g. `25GA370-xxx-12yyy`) gives the **ratio** and the **speed at 12 V**, and that changes the torque, the current and the encoder resolution.
+The current mechanical design is the interactive model `mechanical/design/crane-structure-3d.html` (15-11-2026), and it already uses this motor. The older `mechanical/README.md`, `bom.csv` and STEP files still show the first design (JGY-370 worm motor, Ø30 drum, separate encoder): ignore them for the drive.
 
-**Torque needed:** 1.5 kg (max load) + basket on a drum of radius ≈ 1.55 cm = **≈ 2.4 kg·cm**, plus margin for the overload test (1.6 kg ≈ 2.6 kg·cm).
+```
+ 12 V ─► L298N ─► motor (≈ 5 850 rpm) ─► 45 : 1 gearbox ─► Ø4 D-shaft (≈ 130 rpm no load)
+                                                              │  D-shaped bore, 6.9 mm engaged
+                                                              ▼
+                     outboard support wall ◄─ Ø7 journal ── DRUM (core Ø10, flanges Ø20)
+                     (Ø7.4 hole = plain bearing)              │  rope Ø0.6 anchored through a Ø2 hole,
+                                                              │  wound in one layer
+                                                              ▼
+                                   rope runs diagonally up to the pulley at the arm tip (x = 400 mm)
+                                                              ▼
+                                   over the Ø24 pulley wheel, then straight down (x = 412 mm)
+                                                              ▼
+                                   load cell (between 2 printed Z-parts) ─► bridle ─► basket
+```
 
-| From the datasheet | Rated torque | Fits? |
+**Step by step:**
+1. **Motor mount.** The motor is held **by its gearbox face**: 2 × M3 × 6 countersunk screws into the **motor wall** of the printed bracket (part 06). The bracket sits on the motor plate, clamped by the 2 mast bolts (M4 × 90) plus 2 × M3 × 25. The motor plate is keyed into the mast, so it can only go in one place.
+2. **Torque into the drum.** The drum (part 07, PETG, 100 % infill) slides onto the **Ø4 D-shaft** with a matching D-shaped bore (6.9 mm of the shaft engaged). The flat on the shaft drives the drum; there's no key or set screw.
+3. **Support at the other end.** The drum's **Ø7 journal** turns in a **Ø7.4 hole** in the **outboard support** (part 08), a plain bearing. The drum is carried **at both ends**, so the rope's pull is shared between the gearbox bearing and the support instead of bending the thin 4 mm shaft.
+4. **Winding.** The rope (Ø0.6 mm) is anchored through the Ø2 hole in the core. One drum turn = π × 10.6 mm (core plus half the rope) ≈ **33 mm of rope**. The full 346 mm travel is ≈ **10.4 turns**, about 6.2 mm of the 13 mm core, so the rope stays in **one layer**. Every turn gives the same 33 mm, so the height is simply proportional to the encoder count.
+5. **Rope path.** From the top of the drum the rope runs diagonally up to the **pulley** at the arm tip (a Ø24 printed wheel turning on a fixed sleeve, M4 axle), wraps over it, and hangs straight down to the load cell, the bridle and the basket. There's one rope fall, so rope tension = load.
+6. **Directions.** LIFT turns the drum so it **winds rope on**; LOWER reverses the motor and the drum **pays rope out**. If LIFT lowers, swap M1 / M2.
+
+**Assembly tips**
+- The D-shaft and the Ø7.4 support hole must be **on one axis**: fit the drum first, then tighten the outboard support, and check the drum turns freely by hand.
+- Put a drop of grease or PTFE dry lube in the journal hole, and check it for wear after the tests (PETG on PETG).
+- Before the first run, check that the rope leaves the **top** of the drum toward the pulley, as in the model. The winding direction decides which motor direction is LIFT.
+
+### Your motor: 25GA370, 12 V, 45 : 1 (from the design page)
+
+| Quantity | Value | How |
 |---|---|---|
-| 5-stage gearbox (26:1 – 45:1) | 2.0 kg·cm | **too weak** for 1.5 kg on this drum |
-| 6-stage (57:1 – 98:1) | 2.5 kg·cm | borderline |
-| 7- / 8-stage (125:1 – 478:1) | 3.0 kg·cm | **OK** |
+| Output speed, no load | ≈ 130 rpm | label / design page |
+| Lifting speed with load | ≈ 50 mm/s | ≈ 90 rpm × 33 mm; full travel in ≈ 7 s |
+| Rated torque | ≈ 1.9–2.0 kg·cm | 5-stage gearbox (datasheet: 2.0 rated, 6.0 peak) |
+| Torque needed | ≈ 1.15 kg·cm | (1.5 kg + basket) × 0.53 cm × 1.3 for starting and jerks |
+| Safety factor | ≈ 1.65 | 1.9 ÷ 1.15 |
+| Stall current | ≈ 1.2 A (measure it) | 45:1 isn't in the datasheet table; the 26:1 model has the same ~6 000 rpm 12 V winding and stalls at 1.2 A. Below the L298N's 2 A |
+| Lifting current, 1.5 kg | ≈ 0.3 A (estimate, measure it) | scaled from the datasheet's efficiency point |
 
-| Example models at 12 V | No-load speed | Stall current | Notes |
-|---|---|---|---|
-| 26:1 (`-26-12231`) | 231 rpm | 1.2 A | too fast and too weak for the hoist |
-| 165:1 (`-165-1288`) | 88 rpm | **6.2 A** | strong, but its stall current is **above the L298N's 2 A**, so the jam stop must be quick |
-| 478:1 (`-478-1207.8`) | 7.8 rpm | 0.52 A | slow (≈ 30 s for the full 346 mm), easy on the L298N |
-
-**Drum speed:** 346 mm of travel ÷ 97 mm per drum turn = 3.6 turns. At 43 rpm that's ~5 s, at 7 rpm ~30 s.
-
-**Mechanical change:** the CAD (`mechanical/`) was drawn for a JGY-370 worm motor with a **6 mm** shaft and a separate encoder. The GA25-370 has a **Ø4 mm D-shaft** (3.5 mm across the flat, see the datasheet drawing), a **Ø25 mm round body** and **2 × M3 face holes 17 mm apart**. So:
-- the drum (CR-10) bore changes from 6.1 mm to a 4 mm D-hole (or use a 4 mm shaft coupler / hub),
-- the motor plate (CR-08) needs a Ø25 clamp or a face mount with the 2 × M3 holes,
-- the stub shaft, coupler, separate encoder and encoder bracket (CR-11 … CR-14) are no longer needed.
-
----
+**Why the drum is so small (Ø10):** torque = rope force × drum radius. A small drum needs little torque, so a fast, low-ratio gearbox (45:1) can lift 1.5 kg at a good speed. The cost: the drum must stay in one layer (it does) and be printed solid (100 % infill).
 
 ## 3. Top limit switch in the IN1 wire (hardware backup)
 
@@ -117,16 +136,15 @@ A  ‾|_|‾|_|‾|_       lifting: A rises while B is LOW
 B  _|‾|_|‾|_|‾       lowering: A rises while B is HIGH
 ```
 
-- **Pulses:** typically **11 pulses per motor turn** on A (check the listing: some are 7 or 16). Because it counts the motor shaft, every drum turn gives **11 × gear ratio** pulses:
+- **Pulses:** typically **11 pulses per motor turn** on A (check the listing: some are 7 or 16). It counts the motor shaft, before the 45 : 1 gearbox:
 
-| Ratio | Pulses per drum turn (A rising) | Height per pulse | Full travel (346 mm) |
+| Counting | Per drum turn (33 mm) | Per mm of rope | Full travel (346 mm) |
 |---|---|---|---|
-| 125:1 | 1 375 | 0.07 mm | ≈ 4 900 pulses |
-| 165:1 | 1 815 | 0.05 mm | ≈ 6 500 |
-| 478:1 | 5 258 | 0.02 mm | ≈ 18 800 |
+| A rising edges only (×1) | 11 × 45 = 495 | ≈ 15 (0.07 mm each) | ≈ 5 200 |
+| every edge of A and B (×4) | 1 980 | ≈ 60 (the design page's figure) | ≈ 20 800 |
 
-  That's far finer than needed; the GOTO tolerance is 3 mm.
-- **Pulse rate:** the motor shaft turns fast (thousands of rpm), so A gives roughly **1–2 kHz** while moving. Fine for an interrupt, but see section 5.
+  Both are far finer than needed (the GOTO tolerance is 3 mm), so ×1 is enough and lighter for the Uno.
+- **Pulse rate:** the motor shaft turns at ≈ 5 850 rpm, so A gives ≈ **1 kHz** (×4 counting: ≈ 4 kHz) while moving. Fine for an interrupt, but see section 5.
 - **Why D2 / D3:** the Uno's only two external-interrupt pins. Each edge runs a tiny routine that adds or subtracts 1, so no pulse is missed while the loop is busy. That's why the IR sensor moves from D2 to **A2**.
 - **Pull-ups:** many GA25 encoder boards already have pull-ups (outputs are 0 V / VCC). If A / B only ever read LOW on a meter, the outputs are open-collector: add the 4.7 kΩ pull-ups to 5V. Adding them when the board already has its own does no harm.
 - **Zero point (homing):** an encoder only counts *changes*. At power-up, lift slowly until the IR top sensor triggers and set h = 346 mm (or lower onto the table and set h = 0).
@@ -165,10 +183,10 @@ V_out = 2.5 V + 0.185 V/A × I       (ACS712-5A, VCC = 5 V)
 | +0.3 A (lifting) | 2.56 V | 523 |
 | −0.3 A (lowering) | 2.44 V | 500 |
 | 1.6 A (jammed) | 2.80 V | 573 |
-| ≥ 5 A (stall of a 165:1 motor) | ≈ 4.4 V and above | sensor at the end of its range, still clearly "jam" |
+| ≈ 1.2 A (stall, 45:1 motor) | 2.72 V | 557 |
 
 - **In series with the motor** (not the 12 V supply line): the motor's inductance smooths the current there. In the supply line the PWM would chop it into pulses. The sign follows the direction, so the firmware uses the absolute value.
-- **Jam rule** (as in the simulator): current above the threshold (~1.6 A, adjust to your motor) for 0.3 s while driving → stop, state **JAM**, event to the app. Choose the threshold between the normal lifting current (measure it with 1.5 kg) and the stall current from the datasheet.
+- **Jam rule** (as in the simulator): current above the threshold for 0.3 s while driving → stop, state **JAM**, event to the app. The simulator uses 1.6 A, but this motor stalls at only ≈ 1.2 A: set the threshold between the measured lifting current with 1.5 kg (≈ 0.3 A) and the measured stall current, e.g. ≈ 0.8 A.
 - **Resolution:** 4.9 mV per ADC step ÷ 0.185 V/A ≈ **26 mA**. Average 16–64 readings, because the motor current is noisy.
 - **Without the ACS712** (first diagram): everything else works, but there's no jam detection (`HAS_CURRENT 0`, the app shows "not fitted").
 
@@ -176,11 +194,11 @@ V_out = 2.5 V + 0.185 V/A × I       (ACS712-5A, VCC = 5 V)
 
 ## 7. Holding the load: the GA25 is not self-locking
 
-A worm gear can't be turned backwards by the load; a spur gearbox like the GA25's can be, a little. With 1.5 kg on the drum the gearbox sees ~2.4 kg·cm. High ratios (≥ 125:1) are usually stiff enough to hold it, but that's not guaranteed.
+A worm gear can't be turned backwards by the load; a spur gearbox like the GA25's can. With 1.5 kg the rope pulls the drum with ≈ 0.85 kg·cm. A **45 : 1** spur gearbox is fairly easy to back-drive, so **expect the basket to sink slowly when the motor is unpowered**.
 
 - **Test it:** hang 1.5 kg at mid height, switch the 12 V off, and watch the encoder count for a minute.
 - When stopped, the firmware should use **brake mode** (IN1 = IN2 = LOW, ENA HIGH): the shorted motor resists turning strongly.
-- If it still creeps: the firmware can hold the position with the encoder (small corrections), and the E-stop design must accept that the load may sink slowly while power is cut. Otherwise choose a higher ratio, or add a simple mechanical ratchet on the drum.
+- If it still creeps: the firmware can hold the position with the encoder (small corrections), and the E-stop design must accept that the load may sink slowly while power is cut. Otherwise use a higher ratio (slower lifting), or add a simple ratchet / pawl on the drum flange.
 
 ---
 
@@ -202,4 +220,4 @@ A worm gear can't be turned backwards by the load; a spur gearbox like the GA25'
 | L298N +12V with the E-stop pressed | 0 V |
 | Hook at the top, IN1 terminal with D7 HIGH | 0 V (limit switch opened) |
 | A1 with the motor off | ≈ 2.50 V |
-| Count over one drum turn (mark the drum) | ≈ 11 × ratio |
+| Count over one drum turn (mark the drum) | ≈ 495 (×1) or 1 980 (×4) |

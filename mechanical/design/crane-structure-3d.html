@@ -1720,17 +1720,20 @@ addPart({ id: 'pulley', name: 'Pulley: printed wheel on a fixed sleeve', group: 
     printed(g, 'ub', PETG(), [D.pulley.x, D.arm.y0, 0]);
     cyl(g, 2, 30, 'z', [D.pulley.x, D.pulley.y, -1.5], M.steel(), 14);
   } });
-addPart({ id: 'limitSw', name: 'Top limit switch (KW11-3Z) + bracket', group: 'Sensors', material: 'Roller micro switch on a 7 mm MDF bracket (P15 + P16)', size: 'switch 20 × 10 × 6; bracket 20 × 26 + foot 20 × 20', role: 'ON/OFF sensor (A2): the roller is pressed by the top Z-part’s lug ≈ 22 mm before the pulley; stops lifting and zeroes the motor encoder.',
+addPart({ id: 'limitSw', name: 'IR top sensor (FC-51) + bracket', group: 'Sensors', material: 'IR obstacle module on a 7 mm MDF bracket (P15 + P16)', size: 'module 32 × 14 mm; bracket 20 × 26 + foot 20 × 20', role: 'ON/OFF sensor: looks down beside the pulley; OUT goes LOW when the top Z-part’s lug arrives ≈ 22 mm below the wheel, so the Uno stops lifting and zeroes the encoder height.',
   explode: [40, 60, 60], mass: 0.02, com: [430, 545, 0],
   build: g => {
     const m = M.mdf();
     boxAB(g, [420, 535, -3.5], [440, 561, 3.5], m);
     boxAB(g, [420, 561, -10], [440, D.arm.y0, 10], m);
-    boxAB(g, [418, 527, 3.5], [438, 537, 9.5], mat(0x1f2226));
-    const lever = new THREE.Group(); lever.position.set(418, 529, 6.5); g.add(lever);
-    const arm = boxAB(lever, [-6, -0.4, -1], [0, 0.4, 1], M.steel()); arm.rotation.z = -0.95;
-    cyl(lever, 2.5, 2.4, 'z', [-5, -8, 0], mat(0xe7e9eb), 16);
-    g.userData.lever = lever;
+    boxAB(g, [416, 529, 3.5], [430, 561, 5.1], mat(0x1d4f91, { roughness: 0.5 }));          // blue PCB, 14 × 32
+    boxAB(g, [421, 548, 5.1], [427, 554, 9.5], mat(0x2f6fd0));                                // potentiometer
+    boxAB(g, [418, 538, 5.1], [424, 543, 6.6], M.black());                                    // LM393
+    cyl(g, 2.5, 6, 'y', [419.5, 525, 7.5], mat(0xe9edf2, { transparent: true, opacity: 0.85 }), 16);   // IR emitter (clear)
+    cyl(g, 2.5, 6, 'y', [426.5, 525, 7.5], M.black(), 16);                                    // IR receiver (black)
+    const led = new THREE.MeshBasicMaterial({ color: 0x330000 });
+    const l = new THREE.Mesh(new THREE.SphereGeometry(1.2, 10, 8), led); l.position.set(428, 557, 5.6); g.add(l);
+    g.userData.led = led;
   } });
 
 // ---------------------------------------------------------------- hook / load (moving)
@@ -1902,7 +1905,7 @@ function rebuildRope(yTop) {
   const zc = -8;
   const slack = Math.min(40, (D.switchY - yTop) * 0.12);
   dyn.add(tube([[D.ropeX - 41, yTop - 28.4, 0], [D.ropeX - 52 - slack, yTop + 30, zc], [D.ropeX - 30, (yTop + D.arm.y0) / 2, zc], [D.ropeX - 20, D.arm.y0 - 6, zc], [300, D.arm.y0 - 3, -22], [30, D.arm.y0 - 3, -22], [-22, D.arm.y0 - 40, -24], [-24, 120, -24], [-50, D.base.t + 11, 20], [-60, D.base.t - 15, 60]], 2.2, cableMats.load, true));
-  dyn.add(tube([[428, 532, 9.5], [430, D.arm.y0 - 2, 22], [30, D.arm.y0 - 2, 24], [-24, D.arm.y0 - 30, 24], [-24, 120, 24], [-50, D.base.t + 11, 50], [-60, D.base.t - 15, 60]], 2.2, cableMats.limit, true));
+  dyn.add(tube([[423, 561, 5], [430, D.arm.y0 - 2, 22], [30, D.arm.y0 - 2, 24], [-24, D.arm.y0 - 30, 24], [-24, 120, 24], [-50, D.base.t + 11, 50], [-60, D.base.t - 15, 60]], 2.2, cableMats.limit, true));
   dyn.add(tube([[D.drum.x + 11, D.drum.y + 13, -66], [D.drum.x + 11, D.base.t + 11, -80], [-45, D.base.t + 11, 40], [-60, D.base.t - 15, 60]], 2.6, cableMats.motor, true));   // motor + encoder lead (6 wires)
 }
 
@@ -1937,7 +1940,7 @@ function applyHeight() {
   spinGroup(partById.drum.group, turn);
   partById.pulley.group.children[0].rotation.z = -st.h / D.pulley.r;
   const pressed = yTop >= D.switchY - 0.5;
-  partById.limitSw.group.userData.lever.rotation.z = pressed ? 0.28 : 0;
+  partById.limitSw.group.userData.led.color.setHex(pressed ? 0xff2a1a : 0x330000);
   rebuildRope(yTop);
   updateBottles();
 }
@@ -2006,7 +2009,7 @@ const NAMES = {
   drive:      { no: '06/08', name: 'Motor bracket + outboard support', group: 'Hoist', anchor: [50, 182, 20] },
   drum:       { no: '07', name: 'Rope drum Ø10 (printed)', group: 'Hoist', anchor: [66, 152, 0] },
   pulley:     { no: '02–05', name: 'Printed pulley on sleeve + U-bracket', group: 'Hoist', anchor: [D.pulley.x, D.pulley.y, 0] },
-  limitSw:    { no: 'P15–16', name: 'Limit switch KW11 + bracket', group: 'Sensors & load', anchor: [428, 532, 9] },
+  limitSw:    { no: 'P15–16', name: 'IR top sensor FC-51 + bracket', group: 'Sensors & load', anchor: [423, 545, 6] },
   loadcell:   { no: '01 ×2', name: 'Load cell on printed Z-parts', group: 'Sensors & load' },
   hook:       { no: '–', name: 'Bridle + basket (no S-hook)', group: 'Sensors & load' },
   enclosure:  { no: '–', name: 'Back connectors + grommet', group: 'Electronics box', anchor: [-300, 40, 60] },
@@ -2388,7 +2391,7 @@ const STEPS = [
   { t: 'Hoist', add: ['drive', 'motor', 'drum'], v: VIEWS_HOIST(),
     x: 'Printed base on the motor plate (old motor holes + the 2 mast bolts). Drum onto the motor’s D-shaft, motor through the wall from the back with 2 × M3 × 6 countersunk, then the outboard support over the drum journal, clamped by the M4 × 90 mast bolts.' },
   { t: 'Arm tip', add: ['pulley', 'limitSw'], v: { p: [760, 600, 420], t: [412, 520, 0] },
-    x: 'Printed pulley: wheel + 2 spacer rings on the greased sleeve between the U-bracket cheeks, M4 × 30 axle. Bolt the bracket and the limit-switch bracket up through the arm’s block stack (M3 × 65). Set the switch so the roller is pressed by the top lug ≈ 22 mm below the wheel.' },
+    x: 'Printed pulley: wheel + 2 spacer rings on the greased sleeve between the U-bracket cheeks, M4 × 30 axle. Bolt the pulley bracket and the IR sensor bracket up through the arm’s block stack (M3 × 65). Fit the IR module looking down and set its potentiometer so it trips when the top lug is ≈ 22 mm below the wheel.' },
   { t: 'Rope, load cell and hook', add: ['loadcell', 'hook', 'rope'], v: { p: [900, 500, 760], t: [350, 330, 0] },
     x: 'Rope through the Ø2 hole in the drum core + stopper knot, ≥ 5 turns, over the pulley groove, tied loop on the top Z-part’s M3 pin. Load cell on the 2 printed Z-parts (each end bolted to its own part only); basket bridle loop on the bottom pin.' },
   { t: 'Electronics bay', add: ['enclosure', 'pcb'], xray: true, v: { p: [-520, 520, 620], t: [-170, 40, 60] },

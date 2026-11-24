@@ -113,9 +113,9 @@ The Uno's 5 V pin feeds everything else through the breadboard / PCB rails:
 ## Still needed before the full crane works
 
 **Parts to buy or confirm**
-1. **GA25-370: read the label** (`25GA370-ratio-12speed`). For 1.5 kg on this drum it needs a **7- or 8-stage gearbox (125:1 – 478:1, rated 3 kg·cm)**. A 5-stage one (≤ 45:1) is too weak. Also note its stall current: e.g. 6.2 A at 165:1, above the L298N's 2 A (`05`, section 2).
-2. **Mechanical changes for the GA25-370:** Ø4 mm D-shaft (drum bore was 6 mm), Ø25 mm body with 2 × M3 face holes 17 mm apart (new motor plate holes). The stub shaft, coupler, separate encoder and encoder bracket (CR-11 … CR-14) are no longer needed. The CAD in `mechanical/` still shows the JGY-370.
-3. **Holding test:** hang 1.5 kg, switch the 12 V off, and check it doesn't sink (spur gearbox, not self-locking).
+1. **Motor: 25GA370, 12 V, 45 : 1** (as in `mechanical/design/crane-structure-3d.html`): ≈ 1.9 kg·cm rated against ≈ 1.15 kg·cm needed on the Ø10 drum (safety factor ≈ 1.65), stall ≈ 1.2 A, within the L298N's 2 A. Measure the lifting and stall current to set the jam threshold (`05`, section 2).
+2. **Mechanical drive:** follow the 3D design page (motor held by its face in printed bracket 06, drum 07 on the D-shaft, journal in outboard support 08). `mechanical/README.md`, `bom.csv` and the STEP files still show the old JGY-370 / Ø30 drum design.
+3. **Holding test:** hang 1.5 kg, switch the 12 V off, and check how fast it sinks (45:1 spur gearbox, not self-locking).
 4. **12 V ≥ 2 A adapter**, **buck converter** (12 → 7.5 V), **2 A fuse**.
 5. **E-stop with an NC contact block**, **STOP button with an NC contact**, LIFT / LOWER / RESET (NO), **2-position key switch**, rocker power switch.
 6. **PCF8574 I/O module**, **16×2 LCD with I2C backpack**, **active buzzer module**, 3 LEDs (green / amber / red).

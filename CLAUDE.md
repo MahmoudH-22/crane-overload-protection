@@ -32,12 +32,20 @@ firmware/uno/crane_uno_m2/        Uno m2 sketch (load cell + IR, link to the app
     app_link.*        HC-05 link (L/A/E/S out, C in) usb_console.*  Serial Monitor t/c/s/x/p + status line
     crane_link.h      line format + checksum
 firmware/uno/hc05_setup/          helper: AT commands to the HC-05 through the Uno (finds the baud, resets to slave 9600)
-firmware/uno/crane_overload_m1.ino milestone-1 sketch (sensors on USB only), kept for reference
+firmware/uno/crane_overload_m1/   milestone-1 sketch (sensors on USB only), kept for reference
+firmware/uno/tests/               bench sketches: load_cell_ad620_test (calibration), ad620_probe_voltmeter (Uno as a 6-channel voltmeter)
 firmware/nodemcu/crane_nodemcu/   old NodeMCU Wi-Fi bridge (replaced by the HC-05, kept for reference)
 firmware/*/crane_link.h           Uno serial line protocol (two identical copies; Dart port in the app)
 firmware/test/link_test.cpp       host unit tests for crane_link.h (g++)
-mechanical/         CAD
-docs/               datasheets, rubrics, reports, session briefs
+mechanical/CAD/                   team's Inventor / SolidWorks files (never overwritten by file syncs)
+mechanical/design/                offline 3D models (structure, printed-parts check, hoist drive simulation, load cell Z-mount),
+                                  shopping checklist + shopping list PDF
+mechanical/stl/ (+ stl/STEP/)     print pack 00-08 (STL print-ready + editable STEP), README (motor drive), README-printed-parts, PRINT-NOTES
+mechanical/laser/                 laser pack (68 MDF pieces), files for the shop, cost workbook
+mechanical/dxf/, step/, bom.csv   older JGY-370 design exports (see Open items)
+docs/               datasheets, rubrics, reports, session briefs, exp/ (wiring explanations), wiring diagrams/
+docs/reports/images/              figures used in the reports
+docs/archive/                     superseded files (old guide / handbook / chat summary, NodeMCU-era m1 firmware, old 3D model)
 history/YYYY-MM/DD-MM-YYYY.md  daily log
 ```
 
@@ -112,6 +120,15 @@ test/           parsing, Bluetooth link (codec + gateway with a fake port), tran
   - Alerts (red banner + vibration): OVERLOAD, JAM, ESTOP, crane offline.
   - Not-fitted sensors (`fittedSensorsProvider` from `crane/status.sensors`): height bar "n/a" (no marker), IR "n/a", current / ultrasonic cards "not fitted"; no `motor` -> LIFT / LOWER / GO disabled "Motor not connected"; no height -> GO disabled "No height sensor". `CraneLive.heightMm` / `amps` are nullable.
 
+## Mechanical key values (from the planning chats, 14-24 Nov 2026)
+- Structure: 7 mm MDF, laser-cut finger-jointed box beams (68 pieces) + PETG 3D-printed parts. 740 × 300 × 618 mm overall, outreach ≈ 409 mm, hook travel 0-346 mm.
+- Rated load 1.5 kg (proof 1.9 kg).
+- Hoist: 25GA370 12 V 45:1 (see Open items), Ø10 printed drum on the Ø4 D-shaft, Ø7 journal in the outboard support (Ø7.4 hole, plain bearing), braided PE 0.6 mm rope, 5 dead turns.
+- Pulley: printed Ø24 wheel (6.0 mm thick, flat faces) on a fixed Ø7 × 7.5 sleeve over a threaded M4 × 30, 2 spacer rings; U-bracket via 2 × M3 × 65 through the arm block stack.
+- Load cell on two identical printed Z-parts (48 × 14 × 30), each end bolted to its own part only (M4 × 40 through-bolts), pins and bar centre on one vertical line.
+- Checks: arm SF ≈ 37, deflection 0.46 mm, rope SF ≈ 14, Z-part SF ≈ 8, tipping SF ≈ 2.0 (estimated masses).
+- Load cell conditioning: AD620AN RG 180 Ω (G ≈ 275); REF 1.56 V from 2.2 kΩ / 1 kΩ + LM358 follower; 16 kΩ + 1 µF film (≈ 10 Hz); 100 nF at AD620 pins 7-4.
+
 ## Running
 ```
 mosquitto -c tools/mosquitto.conf -v           # repo root (installed on the laptop with `scoop install mosquitto`)
@@ -131,6 +148,7 @@ g++ -std=c++17 -Wall -Wextra -I firmware/uno/crane_uno_m2 firmware/test/link_tes
 - `docs/app-design.md`: short summary of the app (screens, rules, how it talks to the Uno over the HC-05 with examples, code structure). Keep it in step with this file.
 - `docs/hardware-bringup.md`: wiring Uno <-> HC-05, pairing, upload, what the app should show, troubleshooting.
 - `docs/crane-system-guide.md`: one-document overview for the team: current status, app design, data flow app <-> HC-05 <-> Uno (with worked examples), wiring, and the full step-by-step to see weight + IR in the app (pairing, uploads, checks, calibration, troubleshooting). Update its status table when milestones change.
+- From the planning chats: `docs/crane-load-design-spec.md` (load / structure design and checks), `docs/M1-end-to-end-steps.md` (Milestone 1 test, NodeMCU era), `docs/crane-app-code-session-brief.md` (original app brief, NodeMCU era; the app now follows this file), `docs/reports-and-links.md` (online reports and models). Print instructions in `mechanical/stl/README*.md` + `PRINT-NOTES.txt`.
 
 ## Conventions
 - Clean code, clean architecture: small widgets, no business logic in widgets, repositories behind interfaces.
@@ -138,6 +156,7 @@ g++ -std=c++17 -Wall -Wextra -I firmware/uno/crane_uno_m2 firmware/test/link_tes
 - Line length 120 (`dart format -l 120 lib test`).
 - Layout must never overflow: anything in a fixed-size box (hold / STOP / GO buttons, IR badge, top bar) uses `FittedBox(fit: BoxFit.scaleDown)`; text in rows uses `Expanded` + ellipsis. `test/dashboard_states_test.dart` renders every crane state at 320 / 360 / 393 px wide and with a 130 % font; add new states / widgets there.
 - Uncaught async errors are logged (`PlatformDispatcher.onError` in `main.dart`); MQTT stream errors are handled in `MqttService`.
+- Firmware: no `delay()` in loops; timing with `millis()`.
 - Update this file and `history/YYYY-MM/DD-MM-YYYY.md` after any significant work.
 
 ## Key decisions
@@ -153,10 +172,14 @@ g++ -std=c++17 -Wall -Wextra -I firmware/uno/crane_uno_m2 firmware/test/link_tes
 - Go to height was first hold-to-run, then changed to tap-once at the team's request (16-11-2026). The finger dead-man is replaced by an app dead-man: the app sends the GOTO repeats itself, so if the phone freezes, loses Wi-Fi or the app goes to background, the repeats stop and the crane halts within 600 ms. The Uno still stops at the target (encoder at 50 ms is far more precise than 5 Hz telemetry) and still enforces every safety rule. No contract change was needed.
 
 - Link to the phone: HC-05 Bluetooth instead of the NodeMCU (team decision 21-11-2026): no broker, laptop or hotspot needed for the demo; the Uno sketch did not change (same pins, same lines). The app keeps the MQTT contract internally and translates the lines itself, so telemetry / control / events and their tests did not change, and the MQTT path stays for the simulator. Cost: Android only, one phone at a time, ~10 m range.
+- Milestone 1 prototypes: IR (ON/OFF) and load cell with the team's AD620 conditioning (HX711 not allowed by the course).
+- AD620 REF kept at 2.2 kΩ (1.56 V) as built; 2.0 kΩ (1.67 V) would sit inside the AD620's 1.6 V REF minimum: recommended, not yet done.
+- No ball bearings: printed pulley wheel on a fixed sleeve; drum journal in a printed support.
+- 25GA370 spur gearmotor instead of the worm motor (availability).
 
 ## Open items
 - Firmware m2 covers the load cell + IR (contract-complete for those). Still to do on the Uno: motor driver + LIFT / LOWER / GOTO with the 600 ms / 2 s timeouts (`HAS_MOTOR`), encoder `h`, ACS712 `a` + jam, ultrasonic `us` / `obs`, E-stop sense, panel key (LOCAL). Not yet run on the real boards.
 - Planned pins for the full crane (docs/exp/01): D2/D3 motor encoder, D4 Trig / D11 Echo (HC-SR04), D5 ENA, D7 IN1 (via top limit switch NC + 10 k pull-down), D10 IN2, D8/D9 HC-05 on **AltSoftSerial** (moves from D10/D11: SoftwareSerial blocks interrupts ~1 ms per byte and would lose the 1-2 kHz encoder pulses), D6 buzzer, D12 STOP (NC), A1 ACS712, A2 IR (moves from D2), A3 E-stop sense, A4/A5 I2C (LCD 0x27, PCF8574 0x20: LIFT, LOWER, RESET, MODE, 3 LEDs). Only D13 left.
-- Motor: **GA25-370 12 V with built-in Hall encoder** (team decision 22-11-2026, replaces the BOM's JGY-370 worm + LPD3806). Encoder on the motor shaft: ~11 pulses per motor turn × gear ratio per drum turn. Ratio still to read from the label: needs 125:1-478:1 (3 kg.cm) for 1.5 kg on the Ø31 drum; check stall current vs the L298N's 2 A. Spur gearbox, not self-locking: test that it holds 1.5 kg unpowered; brake (IN1 = IN2 = LOW) when stopped. Mechanical: Ø4 mm D-shaft and Ø25 body, so the drum bore and motor plate in `mechanical/` (drawn for the JGY-370) must change; CR-11 to CR-14 no longer needed.
+- Motor: **25GA370 12 V, 45:1 (≈130 rpm) with built-in Hall encoder**, as in the current mechanical design `mechanical/design/crane-structure-3d.html` (15-11-2026; `mechanical/README.md`, `bom.csv` and STEP still show the old JGY-370 / Ø30 drum). Drive: motor held by its face in printed bracket 06, drum 07 (core Ø10, 100 % PETG) on the Ø4 D-shaft, its Ø7 journal in outboard support 08; rope Ø0.6 in one layer, ≈33 mm per turn, single pulley at the arm tip. ≈1.9 kg·cm rated vs ≈1.15 needed (SF ≈1.65), ≈50 mm/s, stall ≈1.2 A (under the L298N's 2 A; jam threshold ≈0.8 A, measure). Encoder: 495 pulses per drum turn on A rising (≈15/mm), ≈1 kHz while moving. 45:1 spur gearbox is back-drivable: expect the load to sink unpowered; brake (IN1 = IN2 = LOW) and hold with the encoder when stopped.
 - First Bluetooth connection phone <-> HC-05 <-> Uno worked on 21-11-2026 (vivo V2570). Still to check: live weight / IR / TARE / overload over Bluetooth, reconnect after walking out of range.
 - If an iPhone is ever required: swap the HC-05 for an HM-10 (BLE) and add a BLE `BluetoothPort`; the gateway and codec stay.

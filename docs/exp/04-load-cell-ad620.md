@@ -2,7 +2,7 @@
 
 This circuit weighs the load on the hook. It is the crane's **analog sensor with signal conditioning**: the load cell gives a signal of only a few millivolts, the AD620 amplifies it ~275×, an LM358 provides a stable reference so the signal sits in the middle of the usable range, and an RC filter removes noise before the Uno's ADC reads it on **A0**.
 
-![Load cell wiring](<../wiring diagrams/load cell wiring.jpeg>)
+![Load cell wiring](<../wiring diagrams/load-cell-AD620-wiring.png>)
 
 ```
 Load cell ──► AD620 (gain 275) ──► 16 kΩ ──┬──► A0
